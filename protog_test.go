@@ -1,7 +1,9 @@
 package protog
 
 import (
+	"io/fs"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -13,8 +15,8 @@ func TestRun(t *testing.T) {
 		filepath.Join("cpp", "helloworld.pb.cc"),
 		filepath.Join("cpp", "helloworld.grpc.pb.h"),
 		filepath.Join("cpp", "helloworld.grpc.pb.cc"),
-		filepath.Join("csharp", "HelloWorld.cs"),
-		filepath.Join("csharp", "HelloWorldGrpc.cs"),
+		filepath.Join("csharp", "Helloworld.cs"),
+		filepath.Join("csharp", "HelloworldGrpc.cs"),
 		filepath.Join("doc", "index.html"),
 		filepath.Join("go", "testing", "helloworld", "helloworld.pb.go"),
 		filepath.Join("go", "testing", "helloworld", "helloworld.pb.validate.go"),
@@ -111,8 +113,15 @@ func TestRun(t *testing.T) {
 			args := tt.args(dir)
 			require.NoError(t, Run(args, tt.versions))
 
+			var files []string
+			err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+				files = append(files, path)
+				return nil
+			})
+			require.NoError(t, err)
+
 			for _, f := range expectedFilesNoJS {
-				require.FileExists(t, filepath.Join(dir, f))
+				require.FileExistsf(t, filepath.Join(dir, f), "found files:\n%s", strings.Join(files, "\n"))
 			}
 		})
 	}

@@ -8,8 +8,12 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
-func BuildAll() error {
-	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", goReleaserVer), "build")
+func Snapshot() error {
+	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", goReleaserVer), "release", "--snapshot", "--rm-dist")
+}
+
+func Release() error {
+	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", goReleaserVer), "release", "--rm-dist")
 }
 
 func Build() error {

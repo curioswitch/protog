@@ -1,5 +1,6 @@
 builds:
-  - env:
+  - main: ./cmd
+    env:
       - CGO_ENABLED=0
     goos:
       - linux
@@ -8,6 +9,28 @@ builds:
     goarch:
       - amd64
       - arm64
+dockers:
+  - image_templates:
+      - "gcr.io/curioswitch/protog:{{ .Version }}-amd64"
+    use: buildx
+    goarch: amd64
+    build_flag_templates:
+      - "--platform=linux/amd64"
+  - image_templates:
+      - "gcr.io/curioswitch/protog:{{ .Version }}-arm64"
+    use: buildx
+    goarch: arm64
+    build_flag_templates:
+      - "--platform=linux/arm64"
+docker_manifests:
+  - name_template: "gcr.io/curioswitch/protog:latest"
+    image_templates:
+      - "gcr.io/curioswitch/protog:{{ .Version }}-amd64"
+      - "gcr.io/curioswitch/protog:{{ .Version }}-arm64"
+  - name_template: "gcr.io/curioswitch/protog:{{ .Version }}"
+    image_templates:
+      - "gcr.io/curioswitch/protog:{{ .Version }}-amd64"
+      - "gcr.io/curioswitch/protog:{{ .Version }}-arm64"
 checksum:
   name_template: 'checksums.txt'
 snapshot:

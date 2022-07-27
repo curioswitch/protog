@@ -23,6 +23,8 @@ func TestRun(t *testing.T) {
 		filepath.Join("go", "testing", "helloworld", "helloworld_grpc.pb.go"),
 		filepath.Join("java", "io", "grpc", "examples", "helloworld", "HelloWorldProto.java"),
 		filepath.Join("java", "io", "grpc", "examples", "helloworld", "GreeterGrpc.java"),
+		filepath.Join("objc", "Helloworld.pbobjc.h"),
+		filepath.Join("objc", "Helloworld.pbobjc.m"),
 		filepath.Join("php", "Helloworld", "GreeterClient.php"),
 		filepath.Join("php", "Helloworld", "HelloReply.php"),
 		filepath.Join("php", "Helloworld", "HelloRequest.php"),
@@ -37,8 +39,6 @@ func TestRun(t *testing.T) {
 	if runtime.GOOS != "windows" {
 		// grpc_objective_c_plugin crashes on Windows
 		expectedFilesNoJS = append(expectedFilesNoJS,
-			filepath.Join("objc", "Helloworld.pbobjc.h"),
-			filepath.Join("objc", "Helloworld.pbobjc.m"),
 			filepath.Join("objc", "Helloworld.pbrpc.h"),
 			filepath.Join("objc", "Helloworld.pbrpc.m"),
 		)
@@ -59,6 +59,7 @@ func TestRun(t *testing.T) {
 			"--grpc_php_out=" + filepath.Join(dir, "php"),
 			"--python_out=" + filepath.Join(dir, "python"),
 			"--grpc_python_out=" + filepath.Join(dir, "python"),
+			"--objc_out=" + filepath.Join(dir, "objc"),
 			"--ruby_out=" + filepath.Join(dir, "ruby"),
 			"--grpc_ruby_out=" + filepath.Join(dir, "ruby"),
 			"--ts_out=" + filepath.Join(dir, "ts"),
@@ -71,7 +72,6 @@ func TestRun(t *testing.T) {
 
 		if runtime.GOOS != "windows" {
 			args = append(args,
-				"--objc_out="+filepath.Join(dir, "objc"),
 				"--grpc_objc_out="+filepath.Join(dir, "objc"),
 			)
 		}

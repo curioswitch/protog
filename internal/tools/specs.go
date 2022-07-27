@@ -277,10 +277,12 @@ var nodeJSSpec = spec{
 		return []string{filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch), "bin")}
 	},
 	executables: func(dir, ver, os, arch string) map[string]string {
-		bin := filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch), "bin")
+		nodeDir := filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch))
 		return map[string]string{
-			"node": filepath.Join(bin, "node"),
-			"npm":  filepath.Join(bin, "npm"),
+			"node": filepath.Join(nodeDir, "bin", "node"),
+			// Workaround symlinks not being preserved by pointing at the lib file directly instead of bin.
+			// https://github.com/hashicorp/go-getter/issues/60
+			"npm": filepath.Join(nodeDir, "lib", "node_modules", "npm", "bin", "npm-cli.js"),
 		}
 	},
 }

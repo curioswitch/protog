@@ -276,6 +276,13 @@ var nodeJSSpec = spec{
 	path: func(dir, ver, os, arch string) []string {
 		return []string{filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch), "bin")}
 	},
+	executables: func(dir, ver, os, arch string) map[string]string {
+		bin := filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch), "bin")
+		return map[string]string{
+			"node": filepath.Join(bin, "node"),
+			"npm":  filepath.Join(bin, "npm"),
+		}
+	},
 }
 
 var protocGenTSSpec = nodeSpec{

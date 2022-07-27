@@ -339,7 +339,7 @@ func (m *ToolManager) fetchNodeSpec(s nodeSpec, ver string) error {
 		return nil
 	}
 
-	cmd := exec.Command("npm", "install", "--prefix", dir, fmt.Sprintf("%s@%s", s.name, ver))
+	cmd := exec.Command(m.executables["npm"], "install", "--prefix", dir, fmt.Sprintf("%s@%s", s.name, ver))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin

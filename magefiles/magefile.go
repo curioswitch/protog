@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/magefile/mage/sh"
 )
@@ -32,6 +34,16 @@ func Coverage() error {
 
 func Format() error {
 	return sh.RunV("go", "run", fmt.Sprintf("github.com/rinchsan/gosimports/cmd/gosimports@%s", gosImportsVer), "-w", ".")
+}
+
+func CacheDir() error {
+	dir, err := os.UserCacheDir()
+	if err != nil {
+		return err
+	}
+
+	fmt.Print(filepath.Join(dir, "org.curioswitch.protog"))
+	return nil
 }
 
 var Default = Build

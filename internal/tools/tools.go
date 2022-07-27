@@ -303,7 +303,7 @@ func (m *ToolManager) fetch(s spec, ver string) error {
 			XTerraformGetDisabled: true,
 		},
 	})); err != nil {
-		return err
+		return fmt.Errorf("fetching %s from %s: %w", s.name, url, err)
 	}
 
 	if s.postDownload != nil {

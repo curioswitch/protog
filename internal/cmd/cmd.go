@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"os"
-	"strings"
 
 	"github.com/curioswitch/protog/internal/tools"
 	"github.com/spf13/cobra"
@@ -144,13 +143,6 @@ func Run(args []string, env map[string]string) error {
 func mkdir(path string) error {
 	if path == "" {
 		return nil
-	}
-
-	for _, p := range strings.Split(path, ":") {
-		if strings.IndexByte(p, '=') == -1 {
-			path = p
-			break
-		}
 	}
 
 	if err := os.MkdirAll(path, 0755); err != nil {

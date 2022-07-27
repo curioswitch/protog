@@ -3,6 +3,7 @@ package protog
 import (
 	"io/fs"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -17,16 +18,11 @@ func TestRun(t *testing.T) {
 		filepath.Join("cpp", "helloworld.grpc.pb.cc"),
 		filepath.Join("csharp", "Helloworld.cs"),
 		filepath.Join("csharp", "HelloworldGrpc.cs"),
-		filepath.Join("doc", "index.html"),
 		filepath.Join("go", "testing", "helloworld", "helloworld.pb.go"),
 		filepath.Join("go", "testing", "helloworld", "helloworld.pb.validate.go"),
 		filepath.Join("go", "testing", "helloworld", "helloworld_grpc.pb.go"),
 		filepath.Join("java", "io", "grpc", "examples", "helloworld", "HelloWorldProto.java"),
 		filepath.Join("java", "io", "grpc", "examples", "helloworld", "GreeterGrpc.java"),
-		filepath.Join("objc", "Helloworld.pbobjc.h"),
-		filepath.Join("objc", "Helloworld.pbobjc.m"),
-		filepath.Join("objc", "Helloworld.pbrpc.h"),
-		filepath.Join("objc", "Helloworld.pbrpc.m"),
 		filepath.Join("php", "Helloworld", "GreeterClient.php"),
 		filepath.Join("php", "Helloworld", "HelloReply.php"),
 		filepath.Join("php", "Helloworld", "HelloRequest.php"),
@@ -35,10 +31,21 @@ func TestRun(t *testing.T) {
 		filepath.Join("ruby", "helloworld_pb.rb"),
 		filepath.Join("ruby", "helloworld_services_pb.rb"),
 		filepath.Join("ts", "helloworld.ts"),
+		filepath.Join("doc", "index.html"),
+	}
+
+	if runtime.GOOS != "windows" {
+		// grpc_objective_c_plugin crashes on Windows
+		expectedFilesNoJS = append(expectedFilesNoJS,
+			filepath.Join("objc", "Helloworld.pbobjc.h"),
+			filepath.Join("objc", "Helloworld.pbobjc.m"),
+			filepath.Join("objc", "Helloworld.pbrpc.h"),
+			filepath.Join("objc", "Helloworld.pbrpc.m"),
+		)
 	}
 
 	argsNoJS := func(dir string) []string {
-		return []string{
+		args := []string{
 			"--cpp_out=" + filepath.Join(dir, "cpp"),
 			"--grpc_cpp_out=" + filepath.Join(dir, "cpp"),
 			"--csharp_out=" + filepath.Join(dir, "csharp"),
@@ -48,20 +55,28 @@ func TestRun(t *testing.T) {
 			"--go_out=" + filepath.Join(dir, "go"),
 			"--go-grpc_out=" + filepath.Join(dir, "go"),
 			"--grpc-gateway_out=" + filepath.Join(dir, "go"),
-			"--objc_out=" + filepath.Join(dir, "objc"),
-			"--grpc_objc_out=" + filepath.Join(dir, "objc"),
 			"--php_out=" + filepath.Join(dir, "php"),
 			"--grpc_php_out=" + filepath.Join(dir, "php"),
 			"--python_out=" + filepath.Join(dir, "python"),
 			"--grpc_python_out=" + filepath.Join(dir, "python"),
 			"--ruby_out=" + filepath.Join(dir, "ruby"),
 			"--grpc_ruby_out=" + filepath.Join(dir, "ruby"),
-			"--doc_out=" + filepath.Join(dir, "doc"),
 			"--ts_out=" + filepath.Join(dir, "ts"),
-			"--validate_out=lang=go:" + filepath.Join(dir, "go"),
+			"--doc_out=" + filepath.Join(dir, "doc"),
+			"--validate_out=" + filepath.Join(dir, "go"),
+			"--validate_opt=lang=go",
 			"--proto_path=testdata",
 			filepath.Join("testdata", "helloworld.proto"),
 		}
+
+		if runtime.GOOS != "windows" {
+			args = append(args,
+				"--objc_out="+filepath.Join(dir, "objc"),
+				"--grpc_objc_out="+filepath.Join(dir, "objc"),
+			)
+		}
+
+		return args
 	}
 
 	tests := []struct {
@@ -111,14 +126,13 @@ func TestRun(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			dir := t.TempDir()
 			args := tt.args(dir)
-			require.NoError(t, Run(args, tt.versions))
-
+			err := Run(args, tt.versions)
 			var files []string
-			err := filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+			_ = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 				files = append(files, path)
 				return nil
 			})
-			require.NoError(t, err)
+			require.NoErrorf(t, err, "args: %v\nfiles\n%s", args, strings.Join(files, "\n"))
 
 			for _, f := range expectedFilesNoJS {
 				require.FileExistsf(t, filepath.Join(dir, f), "found files:\n%s", strings.Join(files, "\n"))

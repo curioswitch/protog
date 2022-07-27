@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"runtime"
 )
 
 var protocSpec = spec{
@@ -44,7 +45,7 @@ var protocSpec = spec{
 			fallthrough
 		case "linux":
 			suffix = fmt.Sprintf("%s-%s", os, arch)
-		case "windows":
+		case "win":
 			switch arch {
 			case "x86_64":
 				suffix = "win64"
@@ -57,15 +58,8 @@ var protocSpec = spec{
 
 		return fmt.Sprintf("https://github.com/protocolbuffers/protobuf/releases/download/%s/protoc-%s-%s.zip", ver, ver[1:], suffix)
 	},
-	postDownload: func(dir string, _ string) error {
-		if err := os.Chmod(filepath.Join(dir, "bin", "protoc"), 0755); err != nil {
-			return err
-		}
-
-		return nil
-	},
 	executables: func(dir, ver, os, arch string) map[string]string {
-		return map[string]string{"protoc": filepath.Join(dir, "bin", "protoc")}
+		return map[string]string{"protoc": filepath.Join(dir, "bin", exe("protoc"))}
 	},
 }
 
@@ -129,23 +123,15 @@ var protocGenGRPCSpec = spec{
 	url: func(ver, os, arch, ext string) string {
 		return fmt.Sprintf("https://packages.grpc.io/archive/2022/07/%s/protoc/grpc-protoc_%s_%s-1.49.0-dev.%s", ver, os, arch, ext)
 	},
-	postDownload: func(dir, _ string) error {
-		// Remove protoc which is versioned separately from what we want.
-		if err := os.Remove(filepath.Join(dir, "protoc")); err != nil {
-			return err
-		}
-
-		return nil
-	},
 	executables: func(dir, ver, os, arch string) map[string]string {
 		return map[string]string{
-			"grpc_cpp_plugin":         filepath.Join(dir, "grpc_cpp_plugin"),
-			"grpc_csharp_plugin":      filepath.Join(dir, "grpc_csharp_plugin"),
-			"grpc_objective_c_plugin": filepath.Join(dir, "grpc_objective_c_plugin"),
-			"grpc_node_plugin":        filepath.Join(dir, "grpc_node_plugin"),
-			"grpc_php_plugin":         filepath.Join(dir, "grpc_php_plugin"),
-			"grpc_python_plugin":      filepath.Join(dir, "grpc_python_plugin"),
-			"grpc_ruby_plugin":        filepath.Join(dir, "grpc_ruby_plugin"),
+			"grpc_cpp_plugin":         filepath.Join(dir, exe("grpc_cpp_plugin")),
+			"grpc_csharp_plugin":      filepath.Join(dir, exe("grpc_csharp_plugin")),
+			"grpc_objective_c_plugin": filepath.Join(dir, exe("grpc_objective_c_plugin")),
+			"grpc_node_plugin":        filepath.Join(dir, exe("grpc_node_plugin")),
+			"grpc_php_plugin":         filepath.Join(dir, exe("grpc_php_plugin")),
+			"grpc_python_plugin":      filepath.Join(dir, exe("grpc_python_plugin")),
+			"grpc_ruby_plugin":        filepath.Join(dir, exe("grpc_ruby_plugin")),
 		}
 	},
 }
@@ -174,10 +160,7 @@ var protocGenGRPCGatewaySpec = spec{
 		return fmt.Sprintf("https://github.com/grpc-ecosystem/grpc-gateway/releases/download/%s/protoc-gen-grpc-gateway-%s-%s-%s%s?filename=%s", ver, ver, os, arch, suffix, filename)
 	},
 	postDownload: func(dir, osStr string) error {
-		filename := "protoc-gen-grpc-gateway"
-		if osStr == "windows" {
-			filename += ".exe"
-		}
+		filename := exe("protoc-gen-grpc-gateway")
 
 		if err := os.Chmod(filepath.Join(dir, filename), 0755); err != nil {
 			return err
@@ -213,20 +196,10 @@ var protocGenGRPCJavaSpec = spec{
 		}
 	},
 	url: func(ver, os, arch, ext string) string {
-		filename := "protoc-gen-grpc-java"
-		if os == "windows" {
-			filename += ".exe"
-		}
-
-		return fmt.Sprintf("https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/%s/protoc-gen-grpc-java-%s-%s-%s.exe?filename=%s", ver[1:], ver[1:], os, arch, filename)
+		return fmt.Sprintf("https://repo1.maven.org/maven2/io/grpc/protoc-gen-grpc-java/%s/protoc-gen-grpc-java-%s-%s-%s.exe?filename=%s", ver[1:], ver[1:], os, arch, exe("protoc-gen-grpc-java"))
 	},
 	postDownload: func(dir, osStr string) error {
-		filename := "protoc-gen-grpc-java"
-		if osStr == "windows" {
-			filename += ".exe"
-		}
-
-		if err := os.Chmod(filepath.Join(dir, filename), 0755); err != nil {
+		if err := os.Chmod(filepath.Join(dir, exe("protoc-gen-grpc-java")), 0755); err != nil {
 			return err
 		}
 
@@ -274,16 +247,25 @@ var nodeJSSpec = spec{
 		return fmt.Sprintf("https://nodejs.org/dist/%s/node-%s-%s-%s.%s", ver, ver, os, arch, ext)
 	},
 	path: func(dir, ver, os, arch string) []string {
-		return []string{filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch), "bin")}
+		nodeDir := filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch))
+		if os == "win" {
+			return []string{nodeDir}
+		}
+		return []string{filepath.Join(nodeDir, "bin")}
 	},
 	executables: func(dir, ver, os, arch string) map[string]string {
 		nodeDir := filepath.Join(dir, fmt.Sprintf("node-%s-%s-%s", ver, os, arch))
-		return map[string]string{
+		res := map[string]string{
 			"node": filepath.Join(nodeDir, "bin", "node"),
+		}
+		if os == "win" {
+			res["npm"] = filepath.Join(nodeDir, "npm.cmd")
+		} else {
 			// Workaround symlinks not being preserved by pointing at the lib file directly instead of bin.
 			// https://github.com/hashicorp/go-getter/issues/60
-			"npm": filepath.Join(nodeDir, "lib", "node_modules", "npm", "bin", "npm-cli.js"),
+			res["npm"] = filepath.Join(nodeDir, "lib", "node_modules", "npm", "bin", "npm-cli.js")
 		}
+		return res
 	},
 }
 
@@ -315,7 +297,7 @@ var golangSpec = spec{
 	},
 	executables: func(dir, ver, os, arch string) map[string]string {
 		return map[string]string{
-			"go": filepath.Join(dir, "go", "bin", "go"),
+			"go": filepath.Join(dir, "go", "bin", exe("go")),
 		}
 	},
 }
@@ -324,4 +306,11 @@ var protocGenValidateSpec = goSpec{
 	name:    "protoc-gen-validate",
 	repo:    "github.com/envoyproxy/protoc-gen-validate",
 	cmdPath: "github.com/envoyproxy/protoc-gen-validate",
+}
+
+func exe(name string) string {
+	if runtime.GOOS == "windows" {
+		return name + ".exe"
+	}
+	return name
 }

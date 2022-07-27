@@ -9,6 +9,8 @@ builds:
     goarch:
       - amd64
       - arm64
+release:
+  mode: append
 dockers:
   - image_templates:
       - "gcr.io/curioswitch/protog:{{ .Version }}-amd64"

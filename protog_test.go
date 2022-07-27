@@ -3,7 +3,6 @@ package protog
 import (
 	"io/fs"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"testing"
 
@@ -25,6 +24,8 @@ func TestRun(t *testing.T) {
 		filepath.Join("java", "io", "grpc", "examples", "helloworld", "GreeterGrpc.java"),
 		filepath.Join("objc", "Helloworld.pbobjc.h"),
 		filepath.Join("objc", "Helloworld.pbobjc.m"),
+		filepath.Join("objc", "Helloworld.pbrpc.h"),
+		filepath.Join("objc", "Helloworld.pbrpc.m"),
 		filepath.Join("php", "Helloworld", "GreeterClient.php"),
 		filepath.Join("php", "Helloworld", "HelloReply.php"),
 		filepath.Join("php", "Helloworld", "HelloRequest.php"),
@@ -34,14 +35,6 @@ func TestRun(t *testing.T) {
 		filepath.Join("ruby", "helloworld_services_pb.rb"),
 		filepath.Join("ts", "helloworld.ts"),
 		filepath.Join("doc", "index.html"),
-	}
-
-	if runtime.GOOS != "windows" {
-		// grpc_objective_c_plugin crashes on Windows
-		expectedFilesNoJS = append(expectedFilesNoJS,
-			filepath.Join("objc", "Helloworld.pbrpc.h"),
-			filepath.Join("objc", "Helloworld.pbrpc.m"),
-		)
 	}
 
 	argsNoJS := func(dir string) []string {
@@ -60,6 +53,7 @@ func TestRun(t *testing.T) {
 			"--python_out=" + filepath.Join(dir, "python"),
 			"--grpc_python_out=" + filepath.Join(dir, "python"),
 			"--objc_out=" + filepath.Join(dir, "objc"),
+			"--grpc_objc_out=" + filepath.Join(dir, "objc"),
 			"--ruby_out=" + filepath.Join(dir, "ruby"),
 			"--grpc_ruby_out=" + filepath.Join(dir, "ruby"),
 			"--ts_out=" + filepath.Join(dir, "ts"),
@@ -68,12 +62,6 @@ func TestRun(t *testing.T) {
 			"--validate_opt=lang=go",
 			"--proto_path=testdata",
 			filepath.Join("testdata", "helloworld.proto"),
-		}
-
-		if runtime.GOOS != "windows" {
-			args = append(args,
-				"--grpc_objc_out="+filepath.Join(dir, "objc"),
-			)
 		}
 
 		return args

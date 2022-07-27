@@ -375,7 +375,7 @@ func (m *ToolManager) fetchGoSpec(s goSpec, ver string) error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Stdin = os.Stdin
-	cmd.Env = []string{fmt.Sprintf("GOPATH=%s", dir), fmt.Sprintf("GOCACHE=%s", filepath.Join(m.dir, "gocache"))}
+	cmd.Env = []string{fmt.Sprintf("GOPATH=%s", dir), fmt.Sprintf("GOCACHE=%s", filepath.Join(m.dir, "gocache")), "CGO_ENABLED=0"}
 	if err := cmd.Run(); err != nil {
 		return err
 	}

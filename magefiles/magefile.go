@@ -7,23 +7,23 @@ import (
 )
 
 func BuildAll() error {
-	return sh.Run("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", goReleaserVer), "build")
+	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", goReleaserVer), "build")
 }
 
 func Build() error {
-	return sh.Run("go", "build", "-o", "build/protog", "./cmd")
+	return sh.RunV("go", "build", "-o", "build/protog", "./cmd")
 }
 
 func Test() error {
-	return sh.Run("go", "test", "./...")
+	return sh.RunV("go", "test", "./...")
 }
 
 func Coverage() error {
-	if err := sh.Run("go", "test", "-race", "-coverprofile=build/coverage.txt", "-covermode=atomic", "-coverpkg=github.com/curioswitch/protog/...", "./..."); err != nil {
+	if err := sh.RunV("go", "test", "-race", "-coverprofile=build/coverage.txt", "-covermode=atomic", "-coverpkg=github.com/curioswitch/protog/...", "./..."); err != nil {
 		return err
 	}
 
-	if err := sh.Run("go", "tool", "cover", "-html=build/coverage.txt", "-o", "build/coverage.html"); err != nil {
+	if err := sh.RunV("go", "tool", "cover", "-html=build/coverage.txt", "-o", "build/coverage.html"); err != nil {
 		return err
 	}
 
@@ -31,7 +31,7 @@ func Coverage() error {
 }
 
 func Format() error {
-	return sh.Run("go", "run", fmt.Sprintf("github.com/rinchsan/gosimports/cmd/gosimports@%s", gosImportsVer), "-w", ".")
+	return sh.RunV("go", "run", fmt.Sprintf("github.com/rinchsan/gosimports/cmd/gosimports@%s", gosImportsVer), "-w", ".")
 }
 
 var Default = Build

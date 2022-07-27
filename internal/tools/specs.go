@@ -153,6 +153,16 @@ var protocGenGRPCSpec = spec{
 var protocGenGRPCGatewaySpec = spec{
 	name: "protoc-gen-grpc-gateway",
 	repo: "github.com/grpc-ecosystem/grpc-gateway",
+	arch: func(goarch goarch) string {
+		switch goarch {
+		case amd64:
+			return "x86_64"
+		case arm64:
+			return "arm64"
+		default:
+			panic(fmt.Sprintf("unsupported arch: %v", goarch))
+		}
+	},
 	url: func(ver, os, arch, ext string) string {
 		filename := "protoc-gen-grpc-gateway"
 		var suffix string

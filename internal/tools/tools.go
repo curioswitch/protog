@@ -2,6 +2,7 @@ package tools
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -11,6 +12,7 @@ import (
 
 	"github.com/curioswitch/protog/internal/proto"
 	"github.com/hashicorp/go-getter"
+	"github.com/schollz/progressbar/v3"
 )
 
 type Versions struct {
@@ -339,7 +341,7 @@ func (m *ToolManager) fetch(s spec, ver string) error {
 
 	url := s.url(ver, osStr, archStr, ext)
 
-	if err := getter.Get(dir, url, getter.WithUmask(0022), getter.WithMode(getter.ClientModeAny), getter.WithGetters(map[string]getter.Getter{
+	if err := getter.Get(dir, url, getter.WithUmask(0022), getter.WithProgress(progress{}), getter.WithMode(getter.ClientModeAny), getter.WithGetters(map[string]getter.Getter{
 		"https": &getter.HttpGetter{
 			XTerraformGetDisabled: true,
 		},
@@ -444,4 +446,13 @@ func mergePath(path []string) string {
 		sep = ";"
 	}
 	return strings.Join(path, sep)
+}
+
+type progress struct {
+}
+
+func (g progress) TrackProgress(src string, _, totalSize int64, stream io.ReadCloser) (body io.ReadCloser) {
+	bar := progressbar.DefaultBytes(totalSize, src)
+	r := progressbar.NewReader(stream, bar)
+	return &r
 }

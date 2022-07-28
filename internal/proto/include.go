@@ -14,6 +14,7 @@ import (
 type includeSpec struct {
 	prefix  string
 	repo    string
+	ref     string
 	repoDir string
 	dir     string
 }
@@ -50,7 +51,10 @@ func fetchInclude(proto string, dir string) error {
 						continue
 					}
 
-					url := fmt.Sprintf("%s//%s?depth=1", includeSpec.repo, includeSpec.repoDir)
+					repoParts := strings.Split(includeSpec.repo, "/")
+					repoName := repoParts[len(repoParts)-1]
+
+					url := fmt.Sprintf("https://%s/archive/refs/heads/%s.zip//%s-%s/%s?depth=1", includeSpec.repo, includeSpec.ref, repoName, includeSpec.ref, includeSpec.repoDir)
 					if err := getter.Get(dst, url, getter.WithUmask(0022), getter.WithMode(getter.ClientModeAny)); err != nil {
 						return err
 					}

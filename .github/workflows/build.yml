@@ -35,3 +35,35 @@ jobs:
           path: ${{ steps.cachedir.outputs.cache-dir }}
           key: ${{ runner.os }}-${{ runner.arch }}
       - run: go run mage.go test
+  build_linux_arm64:
+    name: Build (linux-arm64)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '^1.18.4'
+          cache: true
+      - run: go test -c .
+        env:
+          CGO_ENABLED: 0
+          GOARCH: arm64
+      - name: Build test container
+        run: |
+          echo 'FROM gcr.io/distroless/static-debian11:debug' >> Dockerfile.test
+          echo 'COPY protog.test /protog.test' >> Dockerfile.test
+          echo 'CMD ["/protog.test"]' >> Dockerfile.test
+      - uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64
+      - uses: docker/setup-buildx-action@v2
+      - uses: docker/build-push-action@v3
+        with:
+          tags: protog:test
+          platforms: linux/arm64
+          file: Dockerfile.test
+          load: true
+      - run: docker run -it --rm --platform linux/arm64 --tmpfs /tmp -v ~/.cache/org.curioswitch.protog:/root/.cache/org.curioswitch.protog protog:test
+

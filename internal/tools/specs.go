@@ -67,12 +67,22 @@ var protocGenGoSpec = spec{
 	name: "protoc-gen-go",
 	repo: "github.com/protocolbuffers/protobuf-go",
 	arch: func(goarch) string {
-		// Currently only amd64 is published, so just try it and either Rosetta or qemu may work.
+		// Currently only amd64 is published, we build from Go otherwise.
 		// https://github.com/golang/protobuf/issues/1466
 		return "amd64"
 	},
 	url: func(ver, os, arch, ext string) string {
 		return fmt.Sprintf("https://github.com/protocolbuffers/protobuf-go/releases/download/%s/protoc-gen-go.%s.%s.%s.%s", ver, ver, os, arch, ext)
+	},
+	goFallbacks: []goFallback{
+		{
+			arch: arm64,
+			spec: goSpec{
+				name:    "protoc-gen-go",
+				repo:    "github.com/protocolbuffers/protobuf-go",
+				cmdPath: "google.golang.org/protobuf/cmd/protoc-gen-go",
+			},
+		},
 	},
 }
 
@@ -93,6 +103,20 @@ var protocGenGoGRPCSpec = spec{
 	},
 	url: func(ver, os, arch, ext string) string {
 		return fmt.Sprintf("https://github.com/grpc/grpc-go/releases/download/cmd%%2Fprotoc-gen-go-grpc%%2F%s/protoc-gen-go-grpc.%s.%s.%s.tar.gz", ver, ver, os, arch)
+	},
+	goFallbacks: []goFallback{
+		{
+			arch: arm64,
+			spec: goSpec{
+				name: "protoc-gen-go-grpc",
+				repo: "github.com/grpc/grpc-go",
+				latestVer: func() (string, error) {
+					// TODO: Use REST API? To find latest release as they have non-protoc tags in the same repo.
+					return "v1.2.0", nil
+				},
+				cmdPath: "google.golang.org/grpc/cmd/protoc-gen-go-grpc",
+			},
+		},
 	},
 }
 

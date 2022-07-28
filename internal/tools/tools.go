@@ -425,6 +425,16 @@ func (m *ToolManager) fetchGoSpec(s goSpec, ver string) error {
 		return err
 	}
 
+	// Don't need this and it's inconvenient to leave around due to not having write permissions.
+	cmd = exec.Command(m.executables["go"], "clean", "-modcache")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+	cmd.Env = []string{fmt.Sprintf("GOPATH=%s", dir), fmt.Sprintf("GOCACHE=%s", filepath.Join(m.dir, "gocache")), "CGO_ENABLED=0"}
+	if err := cmd.Run(); err != nil {
+		return err
+	}
+
 	return nil
 }
 

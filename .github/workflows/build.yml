@@ -53,6 +53,7 @@ jobs:
       - name: Build test container
         run: |
           echo 'FROM gcr.io/distroless/base-debian11:debug' >> Dockerfile.test
+          echo 'RUN ["ln", "-s", "/busybox/env", "/usr/bin/env"]' >> Dockerfile.test
           echo 'COPY protog.test /protog.test' >> Dockerfile.test
           echo 'COPY testdata /testdata' >> Dockerfile.test
           echo 'ENTRYPOINT ["/protog.test"]' >> Dockerfile.test

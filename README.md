@@ -16,8 +16,11 @@ otherwise cause `protoc` to crash
 protog is supported on the following platforms
 
 - linux-amd64
+- linux-arm64
+  - grpc/grpc plugins such as `grpc_python_plugin` are not currently supported as they are not published for arm64
 - darwin-amd64
 - darwin-arm64 (currently only verified locally and not on CI)
+  - grpc/grpc plugins such as `grpc_python_plugin` are only available for amd64 but work through Rosetta
 - windows-amd64
 
-linux-arm64 support will come soon. windows-arm64 will come in the future when it becomes a viable platform.
+windows-arm64 will come in the future when it becomes a viable platform.

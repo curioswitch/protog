@@ -52,7 +52,7 @@ jobs:
           GOARCH: arm64
       - name: Build test container
         run: |
-          echo 'FROM gcr.io/distroless/static-debian11:debug' >> Dockerfile.test
+          echo 'FROM gcr.io/distroless/baser-debian11:debug' >> Dockerfile.test
           echo 'COPY protog.test /protog.test' >> Dockerfile.test
           echo 'COPY testdata /testdata' >> Dockerfile.test
           echo 'ENTRYPOINT ["/protog.test"]' >> Dockerfile.test

@@ -13,12 +13,17 @@ func Run(args []string, env map[string]string) error {
 	var cSharpOut string
 	var cSharpGRPCOut string
 	var docOut string
+	var docsOut string
 	var goOut string
+	var gogoFastOut string
+	var golangDeepCopyOut string
+	var golangJsonShimOut string
 	var goGrpcOut string
 	var grpcGatewayOut string
 	var javaOut string
 	var javaGrpcOut string
 	var jsOut string
+	var jsonSchemaOut string
 	var nodeGRPCOut string
 	var objcOut string
 	var objcGRPCOut string
@@ -42,12 +47,17 @@ func Run(args []string, env map[string]string) error {
 				cSharpOut,
 				cSharpGRPCOut,
 				docOut,
+				docsOut,
 				goOut,
+				gogoFastOut,
+				golangDeepCopyOut,
+				golangJsonShimOut,
 				goGrpcOut,
 				grpcGatewayOut,
 				javaOut,
 				javaGrpcOut,
 				jsOut,
+				jsonSchemaOut,
 				nodeGRPCOut,
 				objcOut,
 				objcGRPCOut,
@@ -74,10 +84,15 @@ func Run(args []string, env map[string]string) error {
 						CppGRPC:        cppGRPCOut != "",
 						CSharpGRPC:     cSharpGRPCOut != "",
 						Doc:            docOut != "",
+						Docs:           docsOut != "",
 						Go:             goOut != "",
+						GogoFast:       gogoFastOut != "",
+						GolangDeepCopy: golangDeepCopyOut != "",
+						GolangJSONShim: golangJsonShimOut != "",
 						GoGRPC:         goGrpcOut != "",
 						GRPCGateway:    grpcGatewayOut != "",
 						JavaGRPC:       javaGrpcOut != "",
+						JSONSchema:     jsonSchemaOut != "",
 						NodeGRPC:       nodeGRPCOut != "",
 						ObjectiveCGRPC: objcGRPCOut != "",
 						PHPGRPC:        phpGRPCOut != "",
@@ -132,10 +147,18 @@ func Run(args []string, env map[string]string) error {
 	cmd.Flags().StringVar(&rubyGRPCOut, "grpc_ruby_out", "", "Generate Ruby gRPC source file.")
 
 	cmd.Flags().StringVar(&docOut, "doc_out", "", "Generate docs.")
+	cmd.Flags().StringVar(&docsOut, "docs_out", "", "Generate docs (istio tools).")
 
 	cmd.Flags().StringVar(&tsOut, "ts_out", "", "Generate TypeScript source file.")
 
+	cmd.Flags().StringVar(&jsonSchemaOut, "jsonschema_out", "", "Generate JSON Schema file.")
+
 	cmd.Flags().StringVar(&validateOut, "validate_out", "", "Generate validate source file.")
+
+	cmd.Flags().StringVar(&golangDeepCopyOut, "golang-deepcopy_out", "", "Generate Go deepcopy file.")
+	cmd.Flags().StringVar(&golangJsonShimOut, "golang-jsonshim_out", "", "Generate Go JSON shim file.")
+
+	cmd.Flags().StringVar(&gogoFastOut, "gogofast_out", "", "Generate Go source file using gogofast.")
 
 	return cmd.Execute()
 }

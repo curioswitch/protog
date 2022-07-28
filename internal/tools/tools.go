@@ -14,27 +14,37 @@ import (
 )
 
 type Versions struct {
-	Go                   string
-	NodeJS               string
-	Protoc               string
-	ProtocGenDoc         string
-	ProtocGenGo          string
-	ProtocGenGoGRPC      string
-	ProtocGenGRPC        string
-	ProtocGenGRPCGateway string
-	ProtocGenGRPCJava    string
-	ProtocGenTS          string
-	ProtocGenValidate    string
+	Go                      string
+	NodeJS                  string
+	Protoc                  string
+	ProtocGenDoc            string
+	ProtocGenDocs           string
+	ProtocGenGo             string
+	ProtocGenGogoFast       string
+	ProtocGenGoGRPC         string
+	ProtocGenGolangDeepCopy string
+	ProtocGenGolangJSONShim string
+	ProtocGenGRPC           string
+	ProtocGenGRPCGateway    string
+	ProtocGenGRPCJava       string
+	ProtocGenJSONSchema     string
+	ProtocGenTS             string
+	ProtocGenValidate       string
 }
 
 type ProtocConfig struct {
 	CppGRPC        bool
 	CSharpGRPC     bool
 	Doc            bool
+	Docs           bool
 	Go             bool
+	GogoFast       bool
+	GolangDeepCopy bool
+	GolangJSONShim bool
 	GoGRPC         bool
 	GRPCGateway    bool
 	JavaGRPC       bool
+	JSONSchema     bool
 	NodeGRPC       bool
 	ObjectiveCGRPC bool
 	PHPGRPC        bool
@@ -77,10 +87,11 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 		return err
 	}
 
-	if m.config.Protoc.Validate || m.config.Protoc.Go {
-		if err := m.fetch(golangSpec, m.config.Versions.Go); err != nil {
-			return err
-		}
+	if err := m.fetch(golangSpec, m.config.Versions.Go); err != nil {
+		return err
+	}
+	if err := m.fetch(nodeJSSpec, m.config.Versions.NodeJS); err != nil {
+		return err
 	}
 
 	if m.config.Protoc.Go {
@@ -131,8 +142,20 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 		args = append(args, fmt.Sprintf("--plugin=protoc-gen-grpc_ruby=%s", m.executables["grpc_ruby_plugin"]))
 	}
 
+	if m.config.Protoc.GogoFast {
+		if err := m.fetchGoSpec(protocGenGogoFastSpec, m.config.Versions.ProtocGenGogoFast); err != nil {
+			return err
+		}
+	}
+
 	if m.config.Protoc.Doc {
 		if err := m.fetch(protocGenDocSpec, m.config.Versions.ProtocGenDoc); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.Docs {
+		if err := m.fetchGoSpec(protocGenDocsSpec, m.config.Versions.ProtocGenDocs); err != nil {
 			return err
 		}
 	}
@@ -144,13 +167,25 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 	}
 
 	if m.config.Protoc.TS {
-		if err := m.fetch(nodeJSSpec, m.config.Versions.NodeJS); err != nil {
+		if err := m.fetchNodeSpec(protocGenTSSpec, m.config.Versions.ProtocGenTS); err != nil {
 			return err
 		}
 	}
 
-	if m.config.Protoc.TS {
-		if err := m.fetchNodeSpec(protocGenTSSpec, m.config.Versions.ProtocGenTS); err != nil {
+	if m.config.Protoc.GolangDeepCopy {
+		if err := m.fetchGoSpec(protocGenGolangDeepCopySpec, m.config.Versions.ProtocGenGolangDeepCopy); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.JSONSchema {
+		if err := m.fetchGoSpec(protocGenJSONSchemaSpec, m.config.Versions.ProtocGenJSONSchema); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.GolangJSONShim {
+		if err := m.fetchGoSpec(protocGenGolangJSONShimSpec, m.config.Versions.ProtocGenGolangJSONShim); err != nil {
 			return err
 		}
 	}

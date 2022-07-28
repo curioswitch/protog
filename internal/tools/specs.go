@@ -332,6 +332,48 @@ var protocGenValidateSpec = goSpec{
 	cmdPath: "github.com/envoyproxy/protoc-gen-validate",
 }
 
+var protocGenJSONSchemaSpec = goSpec{
+	name:    "protoc-gen-jsonschema",
+	repo:    "github.com/chrusty/protoc-gen-jsonschema",
+	cmdPath: "github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema",
+}
+
+var protocGenDocsSpec = goSpec{
+	name:    "protoc-gen-docs",
+	repo:    "github.com/istio/tools",
+	cmdPath: "istio.io/tools/cmd/protoc-gen-docs",
+	latestVer: func() (string, error) {
+		// TODO: Fetch tags to get version
+		return "1.14.2", nil
+	},
+}
+
+var protocGenGolangDeepCopySpec = goSpec{
+	name:    "protoc-gen-golang-deepcopy",
+	repo:    "github.com/istio/tools",
+	cmdPath: "istio.io/tools/cmd/protoc-gen-golang-deepcopy",
+	latestVer: func() (string, error) {
+		// TODO: Fetch tags to get version
+		return "1.14.2", nil
+	},
+}
+
+var protocGenGolangJSONShimSpec = goSpec{
+	name:    "protoc-gen-golang-jsonshim",
+	repo:    "github.com/istio/tools",
+	cmdPath: "istio.io/tools/cmd/protoc-gen-golang-jsonshim",
+	latestVer: func() (string, error) {
+		// TODO: Fetch tags to get version
+		return "1.14.2", nil
+	},
+}
+
+var protocGenGogoFastSpec = goSpec{
+	name:    "protoc-gen-gogofast",
+	repo:    "github.com/gogo/protobuf",
+	cmdPath: "github.com/gogo/protobuf/protoc-gen-gogofast",
+}
+
 func exe(name string) string {
 	if runtime.GOOS == "windows" {
 		return name + ".exe"

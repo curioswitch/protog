@@ -77,6 +77,12 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 		return err
 	}
 
+	if m.config.Protoc.Validate || m.config.Protoc.Go {
+		if err := m.fetch(golangSpec, m.config.Versions.Go); err != nil {
+			return err
+		}
+	}
+
 	if m.config.Protoc.Go {
 		if err := m.fetch(protocGenGoSpec, m.config.Versions.ProtocGenGo); err != nil {
 			return err
@@ -150,12 +156,6 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 	}
 
 	if m.config.Protoc.Validate {
-		if err := m.fetch(golangSpec, m.config.Versions.Go); err != nil {
-			return err
-		}
-	}
-
-	if m.config.Protoc.Validate {
 		if err := m.fetchGoSpec(protocGenValidateSpec, m.config.Versions.ProtocGenValidate); err != nil {
 			return err
 		}
@@ -211,24 +211,6 @@ func determineLatestVersionForGitHubRepo(repo string) (string, error) {
 }
 
 func (m *ToolManager) fetch(s spec, ver string) error {
-	if ver == "" {
-		if s.latestVer != nil {
-			v, err := s.latestVer()
-			if err != nil {
-				return err
-			}
-			ver = v
-		} else {
-			v, err := determineLatestVersionForGitHubRepo(s.repo)
-			if err != nil {
-				return err
-			}
-			ver = v
-		}
-	} else if ver[0] != 'v' {
-		ver = "v" + ver
-	}
-
 	var goos goos
 	switch runtime.GOOS {
 	case "darwin":
@@ -249,6 +231,30 @@ func (m *ToolManager) fetch(s spec, ver string) error {
 		goarch = arm64
 	default:
 		return fmt.Errorf("unsupported architecture: %s", runtime.GOARCH)
+	}
+
+	for _, f := range s.goFallbacks {
+		if f.arch == goarch {
+			return m.fetchGoSpec(f.spec, ver)
+		}
+	}
+
+	if ver == "" {
+		if s.latestVer != nil {
+			v, err := s.latestVer()
+			if err != nil {
+				return err
+			}
+			ver = v
+		} else {
+			v, err := determineLatestVersionForGitHubRepo(s.repo)
+			if err != nil {
+				return err
+			}
+			ver = v
+		}
+	} else if ver[0] != 'v' {
+		ver = "v" + ver
 	}
 
 	var osStr string
@@ -354,7 +360,11 @@ func (m *ToolManager) fetchNodeSpec(s nodeSpec, ver string) error {
 func (m *ToolManager) fetchGoSpec(s goSpec, ver string) error {
 	if ver == "" {
 		if s.latestVer != nil {
-			ver = s.latestVer()
+			v, err := s.latestVer()
+			if err != nil {
+				return err
+			}
+			ver = v
 		} else {
 			v, err := determineLatestVersionForGitHubRepo(s.repo)
 			if err != nil {

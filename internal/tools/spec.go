@@ -26,6 +26,7 @@ type spec struct {
 	postDownload func(dir, os string) error
 	path         func(dir, ver, os, arch string) []string
 	executables  func(dir, ver, os, arch string) map[string]string
+	goFallbacks  []goFallback
 }
 
 type nodeSpec struct {
@@ -38,6 +39,11 @@ type nodeSpec struct {
 type goSpec struct {
 	name      string
 	repo      string
-	latestVer func() string
+	latestVer func() (string, error)
 	cmdPath   string
+}
+
+type goFallback struct {
+	arch goarch
+	spec goSpec
 }

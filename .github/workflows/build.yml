@@ -54,7 +54,8 @@ jobs:
         run: |
           echo 'FROM gcr.io/distroless/static-debian11:debug' >> Dockerfile.test
           echo 'COPY protog.test /protog.test' >> Dockerfile.test
-          echo 'CMD ["/protog.test"]' >> Dockerfile.test
+          echo 'COPY testdata /testdata' >> Dockerfile.test
+          echo 'ENTRYPOINT ["/protog.test"]' >> Dockerfile.test
       - uses: docker/setup-qemu-action@v2
         with:
           platforms: arm64

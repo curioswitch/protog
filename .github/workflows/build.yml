@@ -66,5 +66,5 @@ jobs:
           platforms: linux/arm64
           file: Dockerfile.test
           load: true
-      - run: docker run -it --rm --platform linux/arm64 --tmpfs /tmp -v ~/.cache/org.curioswitch.protog:/root/.cache/org.curioswitch.protog protog:test
+      - run: docker run -t --rm --platform linux/arm64 --tmpfs /tmp -v ~/.cache/org.curioswitch.protog:/root/.cache/org.curioswitch.protog protog:test
 

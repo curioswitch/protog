@@ -30,10 +30,11 @@ type spec struct {
 }
 
 type nodeSpec struct {
-	name      string
-	repo      string
-	latestVer func() string
-	path      func(dir, ver string) []string
+	name        string
+	repo        string
+	latestVer   func() string
+	path        func(dir, ver string) []string
+	executables func(dir string) map[string]string
 }
 
 type goSpec struct {

@@ -35,6 +35,7 @@ func Run(args []string, env map[string]string) error {
 	var rubyOut string
 	var rubyGRPCOut string
 	var tsOut string
+	var improbableTSOut string
 	var validateOut string
 
 	cmd := &cobra.Command{
@@ -56,6 +57,7 @@ func Run(args []string, env map[string]string) error {
 				goGrpcOut,
 				grpcGatewayOut,
 				grpcWebOut,
+				improbableTSOut,
 				javaOut,
 				javaGrpcOut,
 				jsOut,
@@ -94,6 +96,7 @@ func Run(args []string, env map[string]string) error {
 						GoGRPC:         goGrpcOut != "",
 						GRPCGateway:    grpcGatewayOut != "",
 						GRPCWeb:        grpcWebOut != "",
+						ImprobableTS:   improbableTSOut != "",
 						JavaGRPC:       javaGrpcOut != "",
 						JSONSchema:     jsonSchemaOut != "",
 						NodeGRPC:       nodeGRPCOut != "",
@@ -155,6 +158,7 @@ func Run(args []string, env map[string]string) error {
 	cmd.Flags().StringVar(&docsOut, "docs_out", "", "Generate docs (istio tools).")
 
 	cmd.Flags().StringVar(&tsOut, "ts_out", "", "Generate TypeScript source file.")
+	cmd.Flags().StringVar(&improbableTSOut, "improbable_ts_out", "", "Generate TypeScript source file using improbable-eng compiler.")
 
 	cmd.Flags().StringVar(&jsonSchemaOut, "jsonschema_out", "", "Generate JSON Schema file.")
 

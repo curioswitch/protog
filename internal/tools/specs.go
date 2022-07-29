@@ -327,6 +327,20 @@ var protocGenTSSpec = nodeSpec{
 	},
 }
 
+var improbableTSProtocGenSpec = nodeSpec{
+	name: "ts-protoc-gen",
+	repo: "github.com/improbable-eng/ts-protoc-gen",
+	path: func(dir, ver string) []string {
+		// Don't add to path so ts_out corresponds to protoc-gen-ts
+		return []string{}
+	},
+	executables: func(dir string) map[string]string {
+		return map[string]string{
+			"ts-protoc-gen": filepath.Join(dir, "node_modules", ".bin", "protoc-gen-ts"),
+		}
+	},
+}
+
 var golangSpec = spec{
 	name: "golang",
 	repo: "github.com/golang/go",

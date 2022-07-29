@@ -33,6 +33,7 @@ type Versions struct {
 	ProtocGenJSONSchema     string
 	ProtocGenTS             string
 	ProtocGenValidate       string
+	ProtocTSGen             string
 }
 
 type ProtocConfig struct {
@@ -47,6 +48,7 @@ type ProtocConfig struct {
 	GoGRPC         bool
 	GRPCGateway    bool
 	GRPCWeb        bool
+	ImprobableTS   bool
 	JavaGRPC       bool
 	JSONSchema     bool
 	NodeGRPC       bool
@@ -180,6 +182,13 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 		if err := m.fetchNodeSpec(protocGenTSSpec, m.config.Versions.ProtocGenTS); err != nil {
 			return err
 		}
+	}
+
+	if m.config.Protoc.ImprobableTS {
+		if err := m.fetchNodeSpec(improbableTSProtocGenSpec, m.config.Versions.ProtocTSGen); err != nil {
+			return err
+		}
+		args = append(args, fmt.Sprintf("--plugin=protoc-gen-improbable_ts=%s", m.executables["ts-protoc-gen"]))
 	}
 
 	if m.config.Protoc.GolangDeepCopy {
@@ -384,6 +393,12 @@ func (m *ToolManager) fetchNodeSpec(s nodeSpec, ver string) error {
 		m.path = append(s.path(dir, ver), m.path...)
 	} else {
 		m.path = append([]string{dir}, m.path...)
+	}
+
+	if s.executables != nil {
+		for k, v := range s.executables(dir) {
+			m.executables[k] = v
+		}
 	}
 
 	if _, err := os.Stat(dir); err == nil {

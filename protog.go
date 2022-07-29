@@ -26,6 +26,7 @@ func Run(args []string, versions Versions) error {
 	env["PROTOC_GEN_JSONSCHEMA_VERSION"] = versions.ProtocGenJSONSchema
 	env["PROTOC_GEN_TS_VERSION"] = versions.ProtocGenTS
 	env["PROTOC_GEN_VALIDATE_VERSION"] = versions.ProtocGenValidate
+	env["PROTOC_TS_GEN_VERSION"] = versions.ProtocTSGen
 
 	return cmd.Run(args, env)
 }

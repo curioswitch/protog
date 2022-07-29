@@ -242,6 +242,7 @@ var protocGenGRPCWebSpec = spec{
 		}
 	},
 	url: func(ver, os, arch, ext string) string {
+		ver = ver[1:]
 		switch arch {
 		case "x86_64":
 			var suffix string

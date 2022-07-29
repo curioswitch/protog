@@ -142,7 +142,7 @@ func TestRun(t *testing.T) {
 				ProtocGenGolangDeepCopy: "1.13.6",
 				ProtocGenGolangJSONShim: "1.13.6",
 				ProtocGenGogoFast:       "1.3.1",
-				ProtocGenGoGRPC:         "1.2",
+				ProtocGenGoGRPC:         "1.2.0",
 				// Version override not supported yet
 				ProtocGenGRPC:        "",
 				ProtocGenGRPCGateway: "2.10.3",

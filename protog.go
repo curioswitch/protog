@@ -21,6 +21,7 @@ func Run(args []string, versions Versions) error {
 	env["PROTOC_GEN_GO_GRPC_VERSION"] = versions.ProtocGenGoGRPC
 	env["PROTOC_GEN_GRPC_VERSION"] = versions.ProtocGenGRPC
 	env["PROTOC_GEN_GRPC_GATEWAY_VERSION"] = versions.ProtocGenGRPCGateway
+	env["PROTOC_GEN_GRPC_WEB_VERSION"] = versions.ProtocGenGRPCWeb
 	env["PROTOC_GEN_GRPC_JAVA_VERSION"] = versions.ProtocGenGRPCJava
 	env["PROTOC_GEN_JSONSCHEMA_VERSION"] = versions.ProtocGenJSONSchema
 	env["PROTOC_GEN_TS_VERSION"] = versions.ProtocGenTS

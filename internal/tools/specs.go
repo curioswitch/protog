@@ -227,6 +227,47 @@ var protocGenDocSpec = spec{
 	},
 }
 
+var protocGenGRPCWebSpec = spec{
+	name: "protoc-gen-grpc-web",
+	repo: "github.com/grpc/grpc-web",
+	arch: func(goarch goarch) string {
+		switch goarch {
+		case amd64:
+			return "x86_64"
+		case arm64:
+			return "aarch64"
+		default:
+			panic(fmt.Sprintf("unsupported arch: %v", goarch))
+		}
+	},
+	url: func(ver, os, arch, ext string) string {
+		switch arch {
+		case "x86_64":
+			var suffix string
+			if os == "windows" {
+				suffix = ".exe"
+			}
+			return fmt.Sprintf("https://github.com/grpc/grpc-web/releases/download/%s/protoc-gen-grpc-web-%s-%s-%s%s?filename=%s", ver, ver, os, arch, suffix, exe("protoc-gen-grpc-web"))
+		case "aarch64":
+			// Using self-hosted binaries temporarily since the upstream ones are only in artifacts, requiring auth
+			var suffix string
+			if os == "windows" {
+				suffix = ".exe"
+			}
+			return fmt.Sprintf("https://github.com/curioswitch/scratch/releases/download/grpc-web-test/protoc-gen-grpc-web-20220613-%s-%s%s?filename=%s", os, arch, suffix, exe("protoc-gen-grpc-web"))
+		default:
+			panic(fmt.Sprintf("unsupported arch: %v", arch))
+		}
+	},
+	postDownload: func(dir, _ string) error {
+		if err := os.Chmod(filepath.Join(dir, exe("protoc-gen-grpc-web")), 0755); err != nil {
+			return err
+		}
+
+		return nil
+	},
+}
+
 var nodeJSSpec = spec{
 	name: "nodejs",
 	repo: "github.com/nodejs/node",

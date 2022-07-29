@@ -20,6 +20,7 @@ func Run(args []string, env map[string]string) error {
 	var golangJsonShimOut string
 	var goGrpcOut string
 	var grpcGatewayOut string
+	var grpcWebOut string
 	var javaOut string
 	var javaGrpcOut string
 	var jsOut string
@@ -54,6 +55,7 @@ func Run(args []string, env map[string]string) error {
 				golangJsonShimOut,
 				goGrpcOut,
 				grpcGatewayOut,
+				grpcWebOut,
 				javaOut,
 				javaGrpcOut,
 				jsOut,
@@ -91,6 +93,7 @@ func Run(args []string, env map[string]string) error {
 						GolangJSONShim: golangJsonShimOut != "",
 						GoGRPC:         goGrpcOut != "",
 						GRPCGateway:    grpcGatewayOut != "",
+						GRPCWeb:        grpcWebOut != "",
 						JavaGRPC:       javaGrpcOut != "",
 						JSONSchema:     jsonSchemaOut != "",
 						NodeGRPC:       nodeGRPCOut != "",
@@ -133,6 +136,8 @@ func Run(args []string, env map[string]string) error {
 	cmd.Flags().StringVar(&goGrpcOut, "go-grpc_out", "", "Generate Go gRPC source file.")
 
 	cmd.Flags().StringVar(&grpcGatewayOut, "grpc-gateway_out", "", "Generate Go gRPC gateway source file.")
+
+	cmd.Flags().StringVar(&grpcWebOut, "grpc-web_out", "", "Generate gRPC Web source file.")
 
 	cmd.Flags().StringVar(&objcOut, "objc_out", "", "Generate Objective-C header and source.")
 	cmd.Flags().StringVar(&objcGRPCOut, "grpc_objc_out", "", "Generate Objective-C header and source.")

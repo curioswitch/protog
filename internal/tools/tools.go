@@ -29,6 +29,7 @@ type Versions struct {
 	ProtocGenGRPC           string
 	ProtocGenGRPCGateway    string
 	ProtocGenGRPCJava       string
+	ProtocGenGRPCWeb        string
 	ProtocGenJSONSchema     string
 	ProtocGenTS             string
 	ProtocGenValidate       string
@@ -45,6 +46,7 @@ type ProtocConfig struct {
 	GolangJSONShim bool
 	GoGRPC         bool
 	GRPCGateway    bool
+	GRPCWeb        bool
 	JavaGRPC       bool
 	JSONSchema     bool
 	NodeGRPC       bool
@@ -164,6 +166,12 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 
 	if m.config.Protoc.GRPCGateway {
 		if err := m.fetch(protocGenGRPCGatewaySpec, m.config.Versions.ProtocGenGRPCGateway); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.GRPCWeb {
+		if err := m.fetch(protocGenGRPCWebSpec, m.config.Versions.ProtocGenGRPCWeb); err != nil {
 			return err
 		}
 	}

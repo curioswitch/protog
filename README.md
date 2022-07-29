@@ -50,7 +50,7 @@ the appropriate version environment variable for the plugin.
 | [Go](https://github.com/protocolbuffers/protobuf-go)                                      | `--go_out`              | `PROTOC_GEN_GO_VERSION`              |
 | [GogoFast](https://github.com/gogo/protobuf)                                              | `--gogofast_out`        | `PROTOC_GEN_GOGO_FAST_VERSION`       |
 | [Go Deep Copy](https://github.com/istio/tools/tree/master/cmd/protoc-gen-golang-deepcopy) | `--golang-deepcopy_out` | `PROTOC_GEN_GOLANG_DEEPCOPY_VERSION` |
-| [Go JSON Shim](https://github.com/istio/tools/tree/master/cmd/protoc-gen-golang-deepcopy) | `--golang-jsonshim_out` | `PROTOC_GEN_GOLANG_JSONSHIM_VERSION` |
+| [Go JSON Shim](https://github.com/istio/tools/tree/master/cmd/protoc-gen-golang-jsonshim) | `--golang-jsonshim_out` | `PROTOC_GEN_GOLANG_JSONSHIM_VERSION` |
 | [gRPC](https://github.com/grpc/grpc)[^1]                                                  | `--grpc_<lang>_out`     | `PROTOC_GEN_GRPC_VERSION`            |
 | [gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway)                            | `--grpc-gateway_out`    | `PROTOC_GEN_GRPC_GATEWAY_VERSION`    |
 | [gRPC Go](https://github.com/grpc/grpc-go)                                                | `--go-grpc_out`         | `PROTOC_GEN_GO_GRPC_VERSION`         |

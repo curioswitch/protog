@@ -114,7 +114,9 @@ the artifact and will do so. If building a plugin requires Go or NodeJS, it will
 
 It also parses the command line for the proto files that are being built and scans them for `import` statements. It
 compares the import statement to the included registry of [includes](internal/proto/includes.go) and if matches, downloads
-the protos.
+the protos. Include protos do not support versioning because using version numbers is not common with protos. It would
+also mean having different downloaded protos in different folders, but we've found IDEs behave most smoothly by having
+them all in one, unversioned, folder.
 
 ## Alternatives
 
@@ -131,7 +133,8 @@ protog attempts to be an alternative to buf with these main differences:
 
 - Drop-in replacement for protoc, so existing builds can switch to protog more easily
 - Only needs to be online when fetching plugins, which happens when building for the first time or updating versions.
-Buf remote plugins execute remotely at build time and prevent offline builds.
+Buf remote plugins execute remotely at build time and prevent offline builds. Not using remote plugins requires tedious
+plugin management.
 - Only use the source of truth. protog downloads artifacts or source from official sources while Buf maintains a completely
 separate registry. There are tradeoffs to both approach, but we believe ownership is easier to follow by using the
 official sources. For example, when searching `protoc-gen-validate` on BSR, we can only find several uploads all from

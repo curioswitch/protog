@@ -7,8 +7,13 @@ import (
 
 type Versions = tools.Versions
 
-func Run(args []string, versions Versions) error {
-	// round-tripping versions through env and back is a bit weird but keeps things simplest since we need to
+type Config struct {
+	Versions Versions
+}
+
+func Run(args []string, config Config) error {
+	versions := config.Versions
+	// round-tripping through env and back is a bit weird but keeps things simplest since we need to
 	// parse args even for programmatic invocation.
 	env := map[string]string{}
 	env["GO_VERSION"] = versions.Go

@@ -163,7 +163,7 @@ func TestRun(t *testing.T) {
 					"--grpc-web_opt=import_style=commonjs,mode=grpcwebtext",
 				)
 				if runtime.GOARCH == "amd64" || runtime.GOOS == "darwin" {
-					args = append(args, "--grpc_node_out="+filepath.Join(dir, "js"))
+					args = append(args, "--grpc_js_out="+filepath.Join(dir, "js"))
 				}
 				return args
 			},

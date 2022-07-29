@@ -307,7 +307,9 @@ func (m *ToolManager) fetch(s spec, ver string) error {
 			}
 			ver = v
 		}
-	} else if ver[0] != 'v' {
+	}
+
+	if ver[0] != 'v' {
 		ver = "v" + ver
 	}
 
@@ -388,6 +390,10 @@ func (m *ToolManager) fetchNodeSpec(s nodeSpec, ver string) error {
 		}
 	}
 
+	if ver[0] != 'v' {
+		ver = "v" + ver
+	}
+
 	dir := filepath.Join(m.dir, s.name, ver)
 	if s.path != nil {
 		m.path = append(s.path(dir, ver), m.path...)
@@ -432,6 +438,10 @@ func (m *ToolManager) fetchGoSpec(s goSpec, ver string) error {
 			}
 			ver = v
 		}
+	}
+
+	if ver[0] != 'v' && !s.versionNoV {
+		ver = "v" + ver
 	}
 
 	dir := filepath.Join(m.dir, s.name, ver)

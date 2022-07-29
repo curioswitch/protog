@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 var protocSpec = spec{
@@ -130,7 +131,7 @@ var protocGenGRPCSpec = spec{
 		return "x64"
 	},
 	url: func(ver, os, arch, ext string) string {
-		return fmt.Sprintf("https://packages.grpc.io/archive/2022/07/%s/protoc/grpc-protoc_%s_%s-1.49.0-dev.%s", ver, os, arch, ext)
+		return fmt.Sprintf("https://packages.grpc.io/archive/2022/07/%s/protoc/grpc-protoc_%s_%s-1.49.0-dev.%s", ver[1:], os, arch, ext)
 	},
 	executables: func(dir, ver, os, arch string) map[string]string {
 		return map[string]string{
@@ -241,6 +242,7 @@ var protocGenGRPCWebSpec = spec{
 		}
 	},
 	url: func(ver, os, arch, ext string) string {
+		ver = ver[1:]
 		switch arch {
 		case "x86_64":
 			var suffix string
@@ -357,6 +359,11 @@ var golangSpec = spec{
 		return string(ver), nil
 	},
 	url: func(ver, os, arch, ext string) string {
+		// Strip off leading v
+		ver = ver[1:]
+		if !strings.HasPrefix(ver, "go") {
+			ver = "go" + ver
+		}
 		return fmt.Sprintf("https://go.dev/dl/%s.%s-%s.%s", ver, os, arch, ext)
 	},
 	executables: func(dir, ver, os, arch string) map[string]string {
@@ -373,9 +380,10 @@ var protocGenValidateSpec = goSpec{
 }
 
 var protocGenJSONSchemaSpec = goSpec{
-	name:    "protoc-gen-jsonschema",
-	repo:    "github.com/chrusty/protoc-gen-jsonschema",
-	cmdPath: "github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema",
+	name:       "protoc-gen-jsonschema",
+	repo:       "github.com/chrusty/protoc-gen-jsonschema",
+	cmdPath:    "github.com/chrusty/protoc-gen-jsonschema/cmd/protoc-gen-jsonschema",
+	versionNoV: true,
 }
 
 var protocGenDocsSpec = goSpec{
@@ -386,6 +394,7 @@ var protocGenDocsSpec = goSpec{
 		// TODO: Fetch tags to get version
 		return "1.14.2", nil
 	},
+	versionNoV: true,
 }
 
 var protocGenGolangDeepCopySpec = goSpec{
@@ -396,6 +405,7 @@ var protocGenGolangDeepCopySpec = goSpec{
 		// TODO: Fetch tags to get version
 		return "1.14.2", nil
 	},
+	versionNoV: true,
 }
 
 var protocGenGolangJSONShimSpec = goSpec{
@@ -406,6 +416,7 @@ var protocGenGolangJSONShimSpec = goSpec{
 		// TODO: Fetch tags to get version
 		return "1.14.2", nil
 	},
+	versionNoV: true,
 }
 
 var protocGenGogoFastSpec = goSpec{

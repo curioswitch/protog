@@ -82,7 +82,24 @@ func Run(args []string, env map[string]string) error {
 			m, err := tools.NewToolManager(
 				tools.Config{
 					Versions: tools.Versions{
-						Protoc: env["PROTOC_VERSION"],
+						Go:                      env["GO_VERSION"],
+						NodeJS:                  env["NODEJS_VERSION"],
+						Protoc:                  env["PROTOC_VERSION"],
+						ProtocGenDoc:            env["PROTOC_GEN_DOC_VERSION"],
+						ProtocGenDocs:           env["PROTOC_GEN_DOCS_VERSION"],
+						ProtocGenGo:             env["PROTOC_GEN_GO_VERSION"],
+						ProtocGenGolangDeepCopy: env["PROTOC_GEN_GOLANG_DEEPCOPY_VERSION"],
+						ProtocGenGolangJSONShim: env["PROTOC_GEN_GOLANG_JSONSHIM_VERSION"],
+						ProtocGenGogoFast:       env["PROTOC_GEN_GOGO_FAST_VERSION"],
+						ProtocGenGoGRPC:         env["PROTOC_GEN_GO_GRPC_VERSION"],
+						ProtocGenGRPC:           env["PROTOC_GEN_GRPC_VERSION"],
+						ProtocGenGRPCGateway:    env["PROTOC_GEN_GRPC_GATEWAY_VERSION"],
+						ProtocGenGRPCWeb:        env["PROTOC_GEN_GRPC_WEB_VERSION"],
+						ProtocGenGRPCJava:       env["PROTOC_GEN_GRPC_JAVA_VERSION"],
+						ProtocGenJSONSchema:     env["PROTOC_GEN_JSONSCHEMA_VERSION"],
+						ProtocGenTS:             env["PROTOC_GEN_TS_VERSION"],
+						ProtocGenValidate:       env["PROTOC_GEN_VALIDATE_VERSION"],
+						ProtocTSGen:             env["PROTOC_TS_GEN_VERSION"],
 					},
 					Protoc: tools.ProtocConfig{
 						CppGRPC:        cppGRPCOut != "",

@@ -38,10 +38,11 @@ type nodeSpec struct {
 }
 
 type goSpec struct {
-	name      string
-	repo      string
-	latestVer func() (string, error)
-	cmdPath   string
+	name       string
+	repo       string
+	latestVer  func() (string, error)
+	cmdPath    string
+	versionNoV bool
 }
 
 type goFallback struct {

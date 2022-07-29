@@ -19,6 +19,8 @@ func Run(args []string, versions Versions) error {
 	env["PROTOC_GEN_GO_VERSION"] = versions.ProtocGenGo
 	env["PROTOC_GEN_GOGO_FAST_VERSION"] = versions.ProtocGenGogoFast
 	env["PROTOC_GEN_GO_GRPC_VERSION"] = versions.ProtocGenGoGRPC
+	env["PROTOC_GEN_GOLANG_DEEPCOPY_VERSION"] = versions.ProtocGenGolangDeepCopy
+	env["PROTOC_GEN_GOLANG_JSONSHIM_VERSION"] = versions.ProtocGenGolangJSONShim
 	env["PROTOC_GEN_GRPC_VERSION"] = versions.ProtocGenGRPC
 	env["PROTOC_GEN_GRPC_GATEWAY_VERSION"] = versions.ProtocGenGRPCGateway
 	env["PROTOC_GEN_GRPC_WEB_VERSION"] = versions.ProtocGenGRPCWeb

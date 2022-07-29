@@ -25,7 +25,7 @@ func Run(args []string, env map[string]string) error {
 	var javaGrpcOut string
 	var jsOut string
 	var jsonSchemaOut string
-	var nodeGRPCOut string
+	var jsGRPCOut string
 	var objcOut string
 	var objcGRPCOut string
 	var phpOut string
@@ -62,7 +62,7 @@ func Run(args []string, env map[string]string) error {
 				javaGrpcOut,
 				jsOut,
 				jsonSchemaOut,
-				nodeGRPCOut,
+				jsGRPCOut,
 				objcOut,
 				objcGRPCOut,
 				phpOut,
@@ -115,8 +115,8 @@ func Run(args []string, env map[string]string) error {
 						GRPCWeb:        grpcWebOut != "",
 						ImprobableTS:   improbableTSOut != "",
 						JavaGRPC:       javaGrpcOut != "",
+						JavascriptGRPC: jsGRPCOut != "",
 						JSONSchema:     jsonSchemaOut != "",
-						NodeGRPC:       nodeGRPCOut != "",
 						ObjectiveCGRPC: objcGRPCOut != "",
 						PHPGRPC:        phpGRPCOut != "",
 						PythonGRPC:     pythonGRPCOut != "",
@@ -147,7 +147,7 @@ func Run(args []string, env map[string]string) error {
 	cmd.Flags().StringVar(&cSharpGRPCOut, "grpc_csharp_out", "", "Generate C# gRPC source file.")
 
 	cmd.Flags().StringVar(&jsOut, "js_out", "", "Generate JS source file.")
-	cmd.Flags().StringVar(&nodeGRPCOut, "grpc_node_out", "", "Generate NodeJS gRPC source file.")
+	cmd.Flags().StringVar(&jsGRPCOut, "grpc_js_out", "", "Generate JS gRPC source file.")
 
 	cmd.Flags().StringVar(&javaOut, "java_out", "", "Generate Java source file.")
 	cmd.Flags().StringVar(&javaGrpcOut, "grpc-java_out", "", "Generate Java gRPC source file.")

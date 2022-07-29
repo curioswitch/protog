@@ -51,7 +51,7 @@ type ProtocConfig struct {
 	ImprobableTS   bool
 	JavaGRPC       bool
 	JSONSchema     bool
-	NodeGRPC       bool
+	JavascriptGRPC bool
 	ObjectiveCGRPC bool
 	PHPGRPC        bool
 	PythonGRPC     bool
@@ -135,8 +135,8 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 	if m.config.Protoc.ObjectiveCGRPC {
 		args = append(args, fmt.Sprintf("--plugin=protoc-gen-grpc_objc=%s", m.executables["grpc_objective_c_plugin"]))
 	}
-	if m.config.Protoc.NodeGRPC {
-		args = append(args, fmt.Sprintf("--plugin=protoc-gen-grpc_node=%s", m.executables["grpc_node_plugin"]))
+	if m.config.Protoc.JavascriptGRPC {
+		args = append(args, fmt.Sprintf("--plugin=protoc-gen-grpc_js=%s", m.executables["grpc_node_plugin"]))
 	}
 	if m.config.Protoc.PHPGRPC {
 		args = append(args, fmt.Sprintf("--plugin=protoc-gen-grpc_php=%s", m.executables["grpc_php_plugin"]))

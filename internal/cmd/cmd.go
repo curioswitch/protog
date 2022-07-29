@@ -130,7 +130,7 @@ func Run(args []string, env map[string]string) error {
 				return err
 			}
 
-			if err := m.RunProtoc(args, protos); err != nil {
+			if err := m.RunProtoc(args, protos, env["PROTO_INCLUDES_DIR"]); err != nil {
 				return err
 			}
 

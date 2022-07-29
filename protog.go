@@ -8,7 +8,8 @@ import (
 type Versions = tools.Versions
 
 type Config struct {
-	Versions Versions
+	ProtoIncludesDir string
+	Versions         Versions
 }
 
 func Run(args []string, config Config) error {
@@ -16,6 +17,9 @@ func Run(args []string, config Config) error {
 	// round-tripping through env and back is a bit weird but keeps things simplest since we need to
 	// parse args even for programmatic invocation.
 	env := map[string]string{}
+
+	env["PROTO_INCLUDES_DIR"] = config.ProtoIncludesDir
+
 	env["GO_VERSION"] = versions.Go
 	env["NODEJS_VERESION"] = versions.NodeJS
 	env["PROTOC_VERSION"] = versions.Protoc

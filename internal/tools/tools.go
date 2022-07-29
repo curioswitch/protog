@@ -88,7 +88,7 @@ func NewToolManager(config Config) (*ToolManager, error) {
 	}, nil
 }
 
-func (m *ToolManager) RunProtoc(args []string, protos []string) error {
+func (m *ToolManager) RunProtoc(args []string, protos []string, includesDir string) error {
 	if err := m.fetch(protocSpec, m.config.Versions.Protoc); err != nil {
 		return err
 	}
@@ -215,7 +215,9 @@ func (m *ToolManager) RunProtoc(args []string, protos []string) error {
 		}
 	}
 
-	includesDir := filepath.Join("build", "proto-includes")
+	if includesDir == "" {
+		includesDir = filepath.Join("build", "proto-includes")
+	}
 	if err := os.MkdirAll(includesDir, 0755); err != nil {
 		return err
 	}

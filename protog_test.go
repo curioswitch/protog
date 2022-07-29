@@ -2,6 +2,7 @@ package protog
 
 import (
 	"io/fs"
+	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -11,6 +12,7 @@ import (
 )
 
 func TestRun(t *testing.T) {
+	cacheDir, _ := os.UserCacheDir()
 	expectedFilesNoJS := []string{
 		filepath.Join("cpp", "helloworld.pb.h"),
 		filepath.Join("cpp", "helloworld.pb.cc"),
@@ -120,6 +122,7 @@ func TestRun(t *testing.T) {
 		versions      Versions
 		args          func(dir string) []string
 		expectedFiles []string
+		includesDir   string
 	}{
 		{
 			name:     "latest versions",
@@ -168,6 +171,7 @@ func TestRun(t *testing.T) {
 				return args
 			},
 			expectedFiles: expectedFilesJS,
+			includesDir:   filepath.Join(cacheDir, "org.curioswitch.protog", "proto-includes"),
 		},
 	}
 
@@ -176,7 +180,10 @@ func TestRun(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			dir := t.TempDir()
 			args := tt.args(dir)
-			err := Run(args, Config{Versions: tt.versions})
+			err := Run(args, Config{
+				ProtoIncludesDir: tt.includesDir,
+				Versions:         tt.versions,
+			})
 			var files []string
 			_ = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 				files = append(files, path)

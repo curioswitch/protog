@@ -134,7 +134,7 @@ func TestRun(t *testing.T) {
 				Protoc:                  "3.20.1",
 				ProtocGenDoc:            "1.5.1",
 				ProtocGenDocs:           "1.13.6",
-				ProtocGenGo:             "1.2.0",
+				ProtocGenGo:             "1.28.1",
 				ProtocGenGolangDeepCopy: "1.13.6",
 				ProtocGenGolangJSONShim: "1.13.6",
 				// Version override not supported yet

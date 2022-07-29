@@ -61,6 +61,8 @@ func TestRun(t *testing.T) {
 		filepath.Join("js", "helloreply.js"),
 		filepath.Join("js", "hellorequest.js"),
 		filepath.Join("js", "helloworld_grpc_web.js"),
+		filepath.Join("js", "helloworld_pb.d.ts"),
+		filepath.Join("js", "helloworld_pb.js"),
 	)
 	if runtime.GOARCH == "amd64" || runtime.GOOS == "darwin" {
 		expectedFilesJS = append(expectedFilesJS,
@@ -152,6 +154,7 @@ func TestRun(t *testing.T) {
 				args := append(argsNoJS(dir),
 					"--js_out="+filepath.Join(dir, "js"),
 					"--js_opt=import_style=commonjs",
+					"--improbable_ts_out="+filepath.Join(dir, "js"),
 					"--grpc-web_out="+filepath.Join(dir, "js"),
 					"--grpc-web_opt=import_style=commonjs,mode=grpcwebtext",
 				)

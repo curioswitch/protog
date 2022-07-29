@@ -141,13 +141,17 @@ func TestRun(t *testing.T) {
 				ProtocGenGo:             "1.28.1",
 				ProtocGenGolangDeepCopy: "1.13.6",
 				ProtocGenGolangJSONShim: "1.13.6",
+				ProtocGenGogoFast:       "1.3.1",
+				ProtocGenGoGRPC:         "1.2",
 				// Version override not supported yet
 				ProtocGenGRPC:        "",
 				ProtocGenGRPCGateway: "2.10.3",
+				ProtocGenGRPCWeb:     "1.3.1",
 				ProtocGenGRPCJava:    "1.47.0",
 				ProtocGenJSONSchema:  "1.3.8",
 				ProtocGenTS:          "0.8.4",
 				ProtocGenValidate:    "0.6.6",
+				ProtocTSGen:          "0.14.0",
 			},
 			// No js_out which isn't in latest protoc or any plugin yet
 			args: func(dir string) []string {

@@ -59,7 +59,9 @@ func TestRun(t *testing.T) {
 
 	expectedFilesJS := append(expectedFilesNoJS,
 		filepath.Join("js", "helloreply.js"),
-		filepath.Join("js", "hellorequest.js"))
+		filepath.Join("js", "hellorequest.js"),
+		filepath.Join("js", "helloworld_grpc_web.js"),
+	)
 	if runtime.GOARCH == "amd64" || runtime.GOOS == "darwin" {
 		expectedFilesJS = append(expectedFilesJS,
 			filepath.Join("js", "helloworld_grpc.js"),
@@ -147,7 +149,12 @@ func TestRun(t *testing.T) {
 			},
 			// No js_out which isn't in latest protoc or any plugin yet
 			args: func(dir string) []string {
-				args := append(argsNoJS(dir), "--js_out="+filepath.Join(dir, "js"))
+				args := append(argsNoJS(dir),
+					"--js_out="+filepath.Join(dir, "js"),
+					"--js_opt=import_style=commonjs",
+					"--grpc-web_out="+filepath.Join(dir, "js"),
+					"--grpc-web_opt=import_style=commonjs,mode=grpcwebtext",
+				)
 				if runtime.GOARCH == "amd64" || runtime.GOOS == "darwin" {
 					args = append(args, "--grpc_node_out="+filepath.Join(dir, "js"))
 				}

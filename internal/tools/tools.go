@@ -93,13 +93,6 @@ func (m *ToolManager) RunProtoc(args []string, protos []string, includesDir stri
 		return err
 	}
 
-	if err := m.fetch(golangSpec, m.config.Versions.Go); err != nil {
-		return err
-	}
-	if err := m.fetch(nodeJSSpec, m.config.Versions.NodeJS); err != nil {
-		return err
-	}
-
 	if m.config.Protoc.Go {
 		if err := m.fetch(protocGenGoSpec, m.config.Versions.ProtocGenGo); err != nil {
 			return err
@@ -380,6 +373,10 @@ func (m *ToolManager) fetch(s spec, ver string) error {
 }
 
 func (m *ToolManager) fetchNodeSpec(s nodeSpec, ver string) error {
+	if err := m.fetch(nodeJSSpec, m.config.Versions.NodeJS); err != nil {
+		return err
+	}
+
 	if ver == "" {
 		if s.latestVer != nil {
 			ver = s.latestVer()
@@ -426,6 +423,10 @@ func (m *ToolManager) fetchNodeSpec(s nodeSpec, ver string) error {
 }
 
 func (m *ToolManager) fetchGoSpec(s goSpec, ver string) error {
+	if err := m.fetch(golangSpec, m.config.Versions.Go); err != nil {
+		return err
+	}
+
 	if ver == "" {
 		if s.latestVer != nil {
 			v, err := s.latestVer()

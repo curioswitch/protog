@@ -336,7 +336,7 @@ var improbableTSProtocGenSpec = nodeSpec{
 	},
 	executables: func(dir string) map[string]string {
 		return map[string]string{
-			"ts-protoc-gen": filepath.Join(dir, "node_modules", ".bin", "protoc-gen-ts"),
+			"ts-protoc-gen": filepath.Join(dir, "node_modules", ".bin", cmd("protoc-gen-ts")),
 		}
 	},
 }
@@ -417,6 +417,13 @@ var protocGenGogoFastSpec = goSpec{
 func exe(name string) string {
 	if runtime.GOOS == "windows" {
 		return name + ".exe"
+	}
+	return name
+}
+
+func cmd(name string) string {
+	if runtime.GOOS == "windows" {
+		return name + ".cmd"
 	}
 	return name
 }

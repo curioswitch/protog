@@ -176,7 +176,7 @@ func TestRun(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			dir := t.TempDir()
 			args := tt.args(dir)
-			err := Run(args, tt.versions)
+			err := Run(args, Config{Versions: tt.versions})
 			var files []string
 			_ = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
 				files = append(files, path)

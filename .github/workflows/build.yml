@@ -30,7 +30,7 @@ jobs:
           go-version: '^1.18.4'
           cache: true
       - id: cachedir
-        run: echo "::set-output name=cache-dir::$(go run mage.go cachedir)"
+        run: echo "cache-dir=$(go run mage.go cachedir)" >> $GITHUB_OUTPUT
       - uses: "actions/cache@v3"
         with:
           path: ${{ steps.cachedir.outputs.cache-dir }}

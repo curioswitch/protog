@@ -2,13 +2,14 @@ package proto
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"os"
 	"path/filepath"
 	"regexp"
 	"strings"
 
-	"github.com/hashicorp/go-getter"
+	"github.com/hashicorp/go-getter/v2"
 )
 
 type includeSpec struct {
@@ -41,6 +42,8 @@ func fetchInclude(proto string, dir string) error {
 	// This regex should work well enough.
 	// https://github.com/protocolbuffers/protobuf/issues/10310
 	s := bufio.NewScanner(f)
+	client := getter.Client{}
+	ctx := context.Background()
 	for s.Scan() {
 		if m := importRe.FindStringSubmatch(s.Text()); len(m) > 0 {
 			for _, includeSpec := range includeSpecs {
@@ -55,7 +58,12 @@ func fetchInclude(proto string, dir string) error {
 					repoName := repoParts[len(repoParts)-1]
 
 					url := fmt.Sprintf("https://%s/archive/refs/heads/%s.zip//%s-%s/%s?depth=1", includeSpec.repo, includeSpec.ref, repoName, includeSpec.ref, includeSpec.repoDir)
-					if err := getter.Get(dst, url, getter.WithUmask(0022), getter.WithMode(getter.ClientModeAny)); err != nil {
+					if _, err := client.Get(ctx, &getter.Request{
+						Src:     url,
+						Dst:     dst,
+						Umask:   0022,
+						GetMode: getter.ModeAny,
+					}); err != nil {
 						return err
 					}
 				}

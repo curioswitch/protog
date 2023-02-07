@@ -375,7 +375,7 @@ var golangSpec = spec{
 
 var protocGenValidateSpec = goSpec{
 	name:    "protoc-gen-validate",
-	repo:    "github.com/envoyproxy/protoc-gen-validate",
+	repo:    "github.com/bufbuild/protoc-gen-validate",
 	cmdPath: "github.com/envoyproxy/protoc-gen-validate",
 }
 

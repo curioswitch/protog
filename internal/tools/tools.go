@@ -19,6 +19,7 @@ type Versions struct {
 	Go                      string
 	NodeJS                  string
 	Protoc                  string
+	ProtocGenConnectGo      string
 	ProtocGenDoc            string
 	ProtocGenDocs           string
 	ProtocGenGo             string
@@ -37,6 +38,7 @@ type Versions struct {
 }
 
 type ProtocConfig struct {
+	ConnectGo      bool
 	CppGRPC        bool
 	CSharpGRPC     bool
 	Doc            bool
@@ -198,6 +200,12 @@ func (m *ToolManager) RunProtoc(args []string, protos []string, includesDir stri
 
 	if m.config.Protoc.GolangJSONShim {
 		if err := m.fetchGoSpec(protocGenGolangJSONShimSpec, m.config.Versions.ProtocGenGolangJSONShim); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.ConnectGo {
+		if err := m.fetchGoSpec(protocGenConnectGoSpec, m.config.Versions.ProtocGenConnectGo); err != nil {
 			return err
 		}
 	}

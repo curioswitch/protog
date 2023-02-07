@@ -8,6 +8,7 @@ import (
 )
 
 func Run(args []string, env map[string]string) error {
+	var connectGoOut string
 	var cppOut string
 	var cppGRPCOut string
 	var cSharpOut string
@@ -44,6 +45,7 @@ func Run(args []string, env map[string]string) error {
 		},
 		RunE: func(c *cobra.Command, protos []string) error {
 			for _, path := range []string{
+				connectGoOut,
 				cppOut,
 				cppGRPCOut,
 				cSharpOut,
@@ -85,6 +87,7 @@ func Run(args []string, env map[string]string) error {
 						Go:                      env["GO_VERSION"],
 						NodeJS:                  env["NODEJS_VERSION"],
 						Protoc:                  env["PROTOC_VERSION"],
+						ProtocGenConnectGo:      env["PROTOC_GEN_CONNECT_GO_VERSION"],
 						ProtocGenDoc:            env["PROTOC_GEN_DOC_VERSION"],
 						ProtocGenDocs:           env["PROTOC_GEN_DOCS_VERSION"],
 						ProtocGenGo:             env["PROTOC_GEN_GO_VERSION"],
@@ -102,6 +105,7 @@ func Run(args []string, env map[string]string) error {
 						ProtocTSGen:             env["PROTOC_TS_GEN_VERSION"],
 					},
 					Protoc: tools.ProtocConfig{
+						ConnectGo:      connectGoOut != "",
 						CppGRPC:        cppGRPCOut != "",
 						CSharpGRPC:     cSharpGRPCOut != "",
 						Doc:            docOut != "",
@@ -178,6 +182,8 @@ func Run(args []string, env map[string]string) error {
 	cmd.Flags().StringVar(&improbableTSOut, "improbable_ts_out", "", "Generate TypeScript source file using improbable-eng compiler.")
 
 	cmd.Flags().StringVar(&jsonSchemaOut, "jsonschema_out", "", "Generate JSON Schema file.")
+
+	cmd.Flags().StringVar(&connectGoOut, "connect-go_out", "", "Generate connect-go source file.")
 
 	cmd.Flags().StringVar(&validateOut, "validate_out", "", "Generate validate source file.")
 

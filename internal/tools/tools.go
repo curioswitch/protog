@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -11,7 +12,7 @@ import (
 	"strings"
 
 	"github.com/curioswitch/protog/internal/proto"
-	"github.com/hashicorp/go-getter"
+	"github.com/hashicorp/go-getter/v2"
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -363,11 +364,20 @@ func (m *ToolManager) fetch(s spec, ver string) error {
 
 	url := s.url(ver, osStr, archStr, ext)
 
-	if err := getter.Get(dir, url, getter.WithUmask(0022), getter.WithProgress(progress{}), getter.WithMode(getter.ClientModeAny), getter.WithGetters(map[string]getter.Getter{
-		"https": &getter.HttpGetter{
-			XTerraformGetDisabled: true,
+	client := getter.Client{
+		Getters: []getter.Getter{
+			&getter.HttpGetter{XTerraformGetDisabled: true},
 		},
-	})); err != nil {
+	}
+	ctx := context.Background()
+
+	if _, err := client.Get(ctx, &getter.Request{
+		Src:              url,
+		Dst:              dir,
+		Umask:            0022,
+		GetMode:          getter.ModeAny,
+		ProgressListener: progress{},
+	}); err != nil {
 		return fmt.Errorf("fetching %s from %s: %w", s.name, url, err)
 	}
 

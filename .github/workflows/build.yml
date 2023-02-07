@@ -31,6 +31,7 @@ jobs:
           cache: true
       - id: cachedir
         run: echo "cache-dir=$(go run mage.go cachedir)" >> $GITHUB_OUTPUT
+        shell: bash
       - uses: "actions/cache@v3"
         with:
           path: ${{ steps.cachedir.outputs.cache-dir }}

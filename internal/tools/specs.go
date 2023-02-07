@@ -378,6 +378,12 @@ var golangSpec = spec{
 	},
 }
 
+var protocGenConnectGoSpec = goSpec{
+	name:    "protoc-gen-connect-go",
+	repo:    "github.com/bufbuild/connect-go",
+	cmdPath: "github.com/bufbuild/connect-go/cmd/protoc-gen-connect-go",
+}
+
 var protocGenValidateSpec = goSpec{
 	name:    "protoc-gen-validate",
 	repo:    "github.com/bufbuild/protoc-gen-validate",

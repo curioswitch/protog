@@ -152,7 +152,7 @@ func TestRun(t *testing.T) {
 				ProtocGenGRPCWeb:     "1.3.1",
 				ProtocGenGRPCJava:    "1.47.0",
 				ProtocGenJSONSchema:  "1.3.8",
-				ProtocGenTS:          "0.8.4",
+				ProtocGenTS:          "next",
 				ProtocGenValidate:    "0.6.6",
 				ProtocTSGen:          "0.14.0",
 			},

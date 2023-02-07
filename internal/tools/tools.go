@@ -389,7 +389,7 @@ func (m *ToolManager) fetchNodeSpec(s nodeSpec, ver string) error {
 		}
 	}
 
-	if ver[0] != 'v' {
+	if ver[0] != 'v' && ver != "next" {
 		ver = "v" + ver
 	}
 

@@ -9,11 +9,11 @@ import (
 )
 
 func Snapshot() error {
-	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", goReleaserVer), "release", "--snapshot", "--rm-dist")
+	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", verGoReleaser), "release", "--snapshot", "--clean")
 }
 
 func Release() error {
-	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", goReleaserVer), "release", "--rm-dist")
+	return sh.RunV("go", "run", fmt.Sprintf("github.com/goreleaser/goreleaser@%s", verGoReleaser), "release", "--clean")
 }
 
 func Build() error {
@@ -37,7 +37,7 @@ func Coverage() error {
 }
 
 func Format() error {
-	return sh.RunV("go", "run", fmt.Sprintf("github.com/rinchsan/gosimports/cmd/gosimports@%s", gosImportsVer), "-w", ".")
+	return sh.RunV("go", "run", fmt.Sprintf("github.com/rinchsan/gosimports/cmd/gosimports@%s", verGosImports), "-w", ".")
 }
 
 func CacheDir() error {

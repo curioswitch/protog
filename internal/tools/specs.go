@@ -348,11 +348,6 @@ var protocGenESSpec = nodeSpec{
 var protocGenTSSpec = nodeSpec{
 	name: "protoc-gen-ts",
 	repo: "github.com/thesayyn/protoc-gen-ts",
-	latestVer: func() string {
-		// TODO(chokoswitch): Remove after next release, currently dependency conflicts with google-protobuf
-		// prevent the latest published release from functioning.
-		return "next"
-	},
 	path: func(dir, ver string) []string {
 		return []string{filepath.Join(dir, "node_modules", ".bin")}
 	},

@@ -21,10 +21,11 @@ func Run(args []string, config Config) error {
 	env["PROTO_INCLUDES_DIR"] = config.ProtoIncludesDir
 
 	env["GO_VERSION"] = versions.Go
-	env["NODEJS_VERESION"] = versions.NodeJS
+	env["NODEJS_VERSION"] = versions.NodeJS
 	env["PROTOC_VERSION"] = versions.Protoc
 	env["PROTOC_GEN_DOC_VERSION"] = versions.ProtocGenDoc
 	env["PROTOC_GEN_DOCS_VERSION"] = versions.ProtocGenDocs
+	env["PROTOC_GEN_CONNECT_GO_VERSION"] = versions.ProtocGenConnectGo
 	env["PROTOC_GEN_GO_VERSION"] = versions.ProtocGenGo
 	env["PROTOC_GEN_GOGO_FAST_VERSION"] = versions.ProtocGenGogoFast
 	env["PROTOC_GEN_GO_GRPC_VERSION"] = versions.ProtocGenGoGRPC

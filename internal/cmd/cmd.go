@@ -8,13 +8,16 @@ import (
 )
 
 func Run(args []string, env map[string]string) error {
+	var connectESOut string
 	var connectGoOut string
+	var connectWebOut string
 	var cppOut string
 	var cppGRPCOut string
 	var cSharpOut string
 	var cSharpGRPCOut string
 	var docOut string
 	var docsOut string
+	var esOut string
 	var goOut string
 	var gogoFastOut string
 	var golangDeepCopyOut string
@@ -45,13 +48,16 @@ func Run(args []string, env map[string]string) error {
 		},
 		RunE: func(c *cobra.Command, protos []string) error {
 			for _, path := range []string{
+				connectESOut,
 				connectGoOut,
+				connectWebOut,
 				cppOut,
 				cppGRPCOut,
 				cSharpOut,
 				cSharpGRPCOut,
 				docOut,
 				docsOut,
+				esOut,
 				goOut,
 				gogoFastOut,
 				golangDeepCopyOut,
@@ -87,9 +93,12 @@ func Run(args []string, env map[string]string) error {
 						Go:                      env["GO_VERSION"],
 						NodeJS:                  env["NODEJS_VERSION"],
 						Protoc:                  env["PROTOC_VERSION"],
+						ProtocGenConnectES:      env["PROTOC_GEN_CONNECT_ES_VERSION"],
 						ProtocGenConnectGo:      env["PROTOC_GEN_CONNECT_GO_VERSION"],
+						ProtocGenConnectWeb:     env["PROTOC_GEN_CONNECT_WEB_VERSION"],
 						ProtocGenDoc:            env["PROTOC_GEN_DOC_VERSION"],
 						ProtocGenDocs:           env["PROTOC_GEN_DOCS_VERSION"],
+						ProtocGenES:             env["PROTOC_GEN_ES_VERSION"],
 						ProtocGenGo:             env["PROTOC_GEN_GO_VERSION"],
 						ProtocGenGolangDeepCopy: env["PROTOC_GEN_GOLANG_DEEPCOPY_VERSION"],
 						ProtocGenGolangJSONShim: env["PROTOC_GEN_GOLANG_JSONSHIM_VERSION"],
@@ -105,11 +114,14 @@ func Run(args []string, env map[string]string) error {
 						ProtocTSGen:             env["PROTOC_TS_GEN_VERSION"],
 					},
 					Protoc: tools.ProtocConfig{
+						ConnectES:      connectESOut != "",
 						ConnectGo:      connectGoOut != "",
+						ConnectWeb:     connectWebOut != "",
 						CppGRPC:        cppGRPCOut != "",
 						CSharpGRPC:     cSharpGRPCOut != "",
 						Doc:            docOut != "",
 						Docs:           docsOut != "",
+						ES:             esOut != "",
 						Go:             goOut != "",
 						GogoFast:       gogoFastOut != "",
 						GolangDeepCopy: golangDeepCopyOut != "",
@@ -177,6 +189,10 @@ func Run(args []string, env map[string]string) error {
 
 	cmd.Flags().StringVar(&docOut, "doc_out", "", "Generate docs.")
 	cmd.Flags().StringVar(&docsOut, "docs_out", "", "Generate docs (istio tools).")
+
+	cmd.Flags().StringVar(&connectESOut, "connect-es_out", "", "Generate connect-es source file.")
+	cmd.Flags().StringVar(&connectWebOut, "connect-web_out", "", "Generate connect-web source file.")
+	cmd.Flags().StringVar(&esOut, "es_out", "", "Generate protobuf-es source file.")
 
 	cmd.Flags().StringVar(&tsOut, "ts_out", "", "Generate TypeScript source file.")
 	cmd.Flags().StringVar(&improbableTSOut, "improbable_ts_out", "", "Generate TypeScript source file using improbable-eng compiler.")

@@ -20,9 +20,12 @@ type Versions struct {
 	Go                      string
 	NodeJS                  string
 	Protoc                  string
+	ProtocGenConnectES      string
 	ProtocGenConnectGo      string
+	ProtocGenConnectWeb     string
 	ProtocGenDoc            string
 	ProtocGenDocs           string
+	ProtocGenES             string
 	ProtocGenGo             string
 	ProtocGenGogoFast       string
 	ProtocGenGoGRPC         string
@@ -39,11 +42,14 @@ type Versions struct {
 }
 
 type ProtocConfig struct {
+	ConnectES      bool
 	ConnectGo      bool
+	ConnectWeb     bool
 	CppGRPC        bool
 	CSharpGRPC     bool
 	Doc            bool
 	Docs           bool
+	ES             bool
 	Go             bool
 	GogoFast       bool
 	GolangDeepCopy bool
@@ -158,6 +164,24 @@ func (m *ToolManager) RunProtoc(args []string, protos []string, includesDir stri
 
 	if m.config.Protoc.Docs {
 		if err := m.fetchGoSpec(protocGenDocsSpec, m.config.Versions.ProtocGenDocs); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.ConnectES {
+		if err := m.fetchNodeSpec(protocGenConnectESSpec, m.config.Versions.ProtocGenConnectES); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.ConnectWeb {
+		if err := m.fetchNodeSpec(protocGenConnectWebSpec, m.config.Versions.ProtocGenConnectWeb); err != nil {
+			return err
+		}
+	}
+
+	if m.config.Protoc.ES {
+		if err := m.fetchNodeSpec(protocGenESSpec, m.config.Versions.ProtocGenES); err != nil {
 			return err
 		}
 	}

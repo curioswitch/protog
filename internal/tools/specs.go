@@ -321,6 +321,30 @@ var nodeJSSpec = spec{
 	},
 }
 
+var protocGenConnectESSpec = nodeSpec{
+	name: "@bufbuild/protoc-gen-connect-es",
+	repo: "github.com/bufbuild/connect-es",
+	path: func(dir, ver string) []string {
+		return []string{filepath.Join(dir, "node_modules", ".bin")}
+	},
+}
+
+var protocGenConnectWebSpec = nodeSpec{
+	name: "@bufbuild/protoc-gen-connect-web",
+	repo: "github.com/bufbuild/connect-es",
+	path: func(dir, ver string) []string {
+		return []string{filepath.Join(dir, "node_modules", ".bin")}
+	},
+}
+
+var protocGenESSpec = nodeSpec{
+	name: "@bufbuild/protoc-gen-es",
+	repo: "github.com/bufbuild/protobuf-es",
+	path: func(dir, ver string) []string {
+		return []string{filepath.Join(dir, "node_modules", ".bin")}
+	},
+}
+
 var protocGenTSSpec = nodeSpec{
 	name: "protoc-gen-ts",
 	repo: "github.com/thesayyn/protoc-gen-ts",

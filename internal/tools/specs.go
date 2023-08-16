@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
@@ -380,6 +381,12 @@ var golangSpec = spec{
 		if err != nil {
 			return "", err
 		}
+
+		// Additional lines have been added, the first is the version.
+		if i := bytes.IndexByte(ver, '\n'); i >= 0 {
+			ver = ver[:i]
+		}
+
 		return string(ver), nil
 	},
 	url: func(ver, os, arch, ext string) string {

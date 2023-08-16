@@ -10,7 +10,6 @@ import (
 func Run(args []string, env map[string]string) error {
 	var connectESOut string
 	var connectGoOut string
-	var connectWebOut string
 	var cppOut string
 	var cppGRPCOut string
 	var cSharpOut string
@@ -50,7 +49,6 @@ func Run(args []string, env map[string]string) error {
 			for _, path := range []string{
 				connectESOut,
 				connectGoOut,
-				connectWebOut,
 				cppOut,
 				cppGRPCOut,
 				cSharpOut,
@@ -95,7 +93,6 @@ func Run(args []string, env map[string]string) error {
 						Protoc:                  env["PROTOC_VERSION"],
 						ProtocGenConnectES:      env["PROTOC_GEN_CONNECT_ES_VERSION"],
 						ProtocGenConnectGo:      env["PROTOC_GEN_CONNECT_GO_VERSION"],
-						ProtocGenConnectWeb:     env["PROTOC_GEN_CONNECT_WEB_VERSION"],
 						ProtocGenDoc:            env["PROTOC_GEN_DOC_VERSION"],
 						ProtocGenDocs:           env["PROTOC_GEN_DOCS_VERSION"],
 						ProtocGenES:             env["PROTOC_GEN_ES_VERSION"],
@@ -116,7 +113,6 @@ func Run(args []string, env map[string]string) error {
 					Protoc: tools.ProtocConfig{
 						ConnectES:      connectESOut != "",
 						ConnectGo:      connectGoOut != "",
-						ConnectWeb:     connectWebOut != "",
 						CppGRPC:        cppGRPCOut != "",
 						CSharpGRPC:     cSharpGRPCOut != "",
 						Doc:            docOut != "",
@@ -191,7 +187,6 @@ func Run(args []string, env map[string]string) error {
 	cmd.Flags().StringVar(&docsOut, "docs_out", "", "Generate docs (istio tools).")
 
 	cmd.Flags().StringVar(&connectESOut, "connect-es_out", "", "Generate connect-es source file.")
-	cmd.Flags().StringVar(&connectWebOut, "connect-web_out", "", "Generate connect-web source file.")
 	cmd.Flags().StringVar(&esOut, "es_out", "", "Generate protobuf-es source file.")
 
 	cmd.Flags().StringVar(&tsOut, "ts_out", "", "Generate TypeScript source file.")

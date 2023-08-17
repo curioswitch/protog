@@ -22,7 +22,6 @@ type Versions struct {
 	Protoc                  string
 	ProtocGenConnectES      string
 	ProtocGenConnectGo      string
-	ProtocGenConnectWeb     string
 	ProtocGenDoc            string
 	ProtocGenDocs           string
 	ProtocGenES             string
@@ -44,7 +43,6 @@ type Versions struct {
 type ProtocConfig struct {
 	ConnectES      bool
 	ConnectGo      bool
-	ConnectWeb     bool
 	CppGRPC        bool
 	CSharpGRPC     bool
 	Doc            bool
@@ -170,12 +168,6 @@ func (m *ToolManager) RunProtoc(args []string, protos []string, includesDir stri
 
 	if m.config.Protoc.ConnectES {
 		if err := m.fetchNodeSpec(protocGenConnectESSpec, m.config.Versions.ProtocGenConnectES); err != nil {
-			return err
-		}
-	}
-
-	if m.config.Protoc.ConnectWeb {
-		if err := m.fetchNodeSpec(protocGenConnectWebSpec, m.config.Versions.ProtocGenConnectWeb); err != nil {
 			return err
 		}
 	}

@@ -27,7 +27,6 @@ func Run(args []string, config Config) error {
 	env["PROTOC_GEN_DOCS_VERSION"] = versions.ProtocGenDocs
 	env["PROTOC_GEN_CONNECT_ES_VERSION"] = versions.ProtocGenConnectES
 	env["PROTOC_GEN_CONNECT_GO_VERSION"] = versions.ProtocGenConnectGo
-	env["PROTOC_GEN_CONNECT_WEB_VERSION"] = versions.ProtocGenConnectWeb
 	env["PROTOC_GEN_ES_VERSION"] = versions.ProtocGenES
 	env["PROTOC_GEN_GO_VERSION"] = versions.ProtocGenGo
 	env["PROTOC_GEN_GOGO_FAST_VERSION"] = versions.ProtocGenGogoFast

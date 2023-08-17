@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"net/http"
@@ -323,7 +324,7 @@ var nodeJSSpec = spec{
 
 var protocGenConnectESSpec = nodeSpec{
 	name: "@bufbuild/protoc-gen-connect-es",
-	repo: "github.com/bufbuild/connect-es",
+	repo: "github.com/connectrpc/connect-es",
 	path: func(dir, ver string) []string {
 		return []string{filepath.Join(dir, "node_modules", ".bin")}
 	},
@@ -331,7 +332,7 @@ var protocGenConnectESSpec = nodeSpec{
 
 var protocGenConnectWebSpec = nodeSpec{
 	name: "@bufbuild/protoc-gen-connect-web",
-	repo: "github.com/bufbuild/connect-es",
+	repo: "github.com/connectrpc/connect-es",
 	path: func(dir, ver string) []string {
 		return []string{filepath.Join(dir, "node_modules", ".bin")}
 	},
@@ -380,6 +381,12 @@ var golangSpec = spec{
 		if err != nil {
 			return "", err
 		}
+
+		// Additional lines have been added, the first is the version.
+		if i := bytes.IndexByte(ver, '\n'); i >= 0 {
+			ver = ver[:i]
+		}
+
 		return string(ver), nil
 	},
 	url: func(ver, os, arch, ext string) string {
@@ -399,8 +406,8 @@ var golangSpec = spec{
 
 var protocGenConnectGoSpec = goSpec{
 	name:    "protoc-gen-connect-go",
-	repo:    "github.com/bufbuild/connect-go",
-	cmdPath: "github.com/bufbuild/connect-go/cmd/protoc-gen-connect-go",
+	repo:    "github.com/connectrpc/connect-go",
+	cmdPath: "connectrpc.com/connect/cmd/protoc-gen-connect-go",
 }
 
 var protocGenValidateSpec = goSpec{

@@ -1,3 +1,9 @@
+# Deprecated
+
+This project is deprecated in favor of the approach used in wasilibs. It should provide a faster, more stable experience.
+
+https://github.com/wasilibs/go-protoc-gen-builtins
+
 # protog: a drop-in replacement for protoc that manages dependencies
 
 [protoc](https://github.com/protocolbuffers/protobuf#protocol-compiler-installation) is the official tool for compiling
